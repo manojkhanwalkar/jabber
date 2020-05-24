@@ -2,13 +2,18 @@ package util;
 
 import com.google.common.io.Files;
 import org.apache.commons.io.FileUtils;
+import org.xeustechnologies.jcl.JarClassLoader;
+import org.xeustechnologies.jcl.JclObjectFactory;
+import org.xeustechnologies.jcl.JclUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Base64;
 import java.util.jar.JarFile;
 
-public class JarBase64Util {
+public class JarUtils {
 
 
     public static String getBase64EncodedStringFromJar(String fileName)
@@ -37,6 +42,34 @@ public class JarBase64Util {
 
     }
 
+    public static Object loadClassFromJar()
+    {
+        try {
+            JarClassLoader jcl = new JarClassLoader();
+        jcl.add("/tmp/epirestored.jar"); // Load jar file
+
+        JclObjectFactory factory = JclObjectFactory.getInstance();
+// Create object of loaded class
+        Object obj = factory.create(jcl, "tmp.Test");
+
+
+        Class c = obj.getClass();
+
+        Method method = c.getMethod("hello");
+
+
+            System.out.println(method.invoke(obj));
+            return obj;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
 
     public static void main(String[] args) {
 
@@ -49,8 +82,9 @@ public class JarBase64Util {
         getJarFromBase64EncodedString("/tmp/epirestored.jar", str);
 
 
+        loadClassFromJar();
 
-        System.out.println("Check /tmp for jar file created");
+
 
     }
 }
