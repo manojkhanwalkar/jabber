@@ -2,6 +2,12 @@ package scheduler;
 
 
 
+import com.codahale.metrics.annotation.Timed;
+import data.StatusRequest;
+import data.StatusResponse;
+import data.SubmitRequest;
+import data.SubmitResponse;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,25 +26,43 @@ public class SchedulerResource {
     private final String template;
     private final String defaultName;
 
+    ClientRequestManager clientRequestManager ;
+
 
     public SchedulerResource(String template, String defaultName) {
         this.template = template;
         this.defaultName = defaultName;
+        clientRequestManager = new ClientRequestManager();
     }
 
 
-  /*  @POST
+   @POST
     @Timed
-    @Path("/keyexchange")
+    @Path("/submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public KeyExchange exchange(KeyExchange request) {
+    public SubmitResponse submit(SubmitRequest request) {
 
 
-        return keyExchangeManager.processExchange(request);
+        return clientRequestManager.submit(request);
 
 
     }
 
+
+    @POST
+    @Timed
+    @Path("/status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public StatusResponse status(StatusRequest request) {
+
+
+        return clientRequestManager.status(request);
+
+
+    }
+/*
+
+/*
 
     @GET
     @Timed
