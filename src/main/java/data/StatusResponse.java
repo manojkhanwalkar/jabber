@@ -17,7 +17,7 @@ public class StatusResponse {
     }
 
 
-    List<StatusTuple>  jobStatus = new ArrayList<>();
+    ArrayList<StatusTuple>  jobStatus = new ArrayList<>();
 
     public void addStatus(String id , Status status)
     {
@@ -25,11 +25,15 @@ public class StatusResponse {
     }
 
 
-    public List<StatusTuple> getJobStatus()
+    public ArrayList<StatusTuple> getJobStatus()
     {
         return jobStatus;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "StatusResponse{" +
+                "jobStatus=" + jobStatus +
+                '}';
+    }
 }

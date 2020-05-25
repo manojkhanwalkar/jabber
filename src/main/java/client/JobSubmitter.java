@@ -10,6 +10,9 @@ import util.Connection;
 import util.JSONUtil;
 import util.JarUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JobSubmitter {
 
     public static void main(String[] args) {
@@ -30,6 +33,14 @@ public class JobSubmitter {
         SubmitResponse response = submitJob(request);
 
         System.out.println(response);
+
+        ArrayList<String> jobids = new ArrayList<>();
+        jobids.add(response.getId());
+
+        StatusRequest statusRequest = new StatusRequest(jobids,"client1");
+        StatusResponse statusResponse = getStatus(statusRequest);
+
+        System.out.println(statusResponse);
     }
 
 
@@ -52,7 +63,13 @@ public class JobSubmitter {
 
     private StatusResponse getStatus(StatusRequest statusRequest)
     {
-        return null;
+        Connection app = new Connection("https://localhost:8480/");
+
+        String respStr =  app.sendSimple(JSONUtil.toJSON(statusRequest),"status");
+
+        StatusResponse response = (StatusResponse)JSONUtil.fromJSON(respStr,StatusResponse.class);
+
+        return response;
     }
 
 }

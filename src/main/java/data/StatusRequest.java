@@ -1,20 +1,21 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StatusRequest {
 
 
-    List<String> jobIds;
+    ArrayList<String> jobIds = new ArrayList<>();
 
     String client;
 
 
-    public List<String> getJobIds() {
+    public ArrayList<String> getJobIds() {
         return jobIds;
     }
 
-    public void setJobIds(List<String> jobIds) {
+    public void setJobIds(ArrayList<String> jobIds) {
         this.jobIds = jobIds;
     }
 
@@ -27,7 +28,7 @@ public class StatusRequest {
     }
 
 
-    public StatusRequest(List<String> jobIds, String client) {
+    public StatusRequest(ArrayList<String> jobIds, String client) {
         this.jobIds = jobIds;
         this.client = client;
     }
