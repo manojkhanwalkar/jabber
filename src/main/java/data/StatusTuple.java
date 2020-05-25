@@ -7,9 +7,29 @@ public class StatusTuple
     String id;
     Status status;
 
+    Result result;
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
+
     public StatusTuple(String id, Status status) {
         this.id = id;
         this.status = status;
+    }
+
+    public StatusTuple(String id, Status status, Result result) {
+        this.id = id;
+        this.status = status;
+        this.result = result;
+    }
+
+    public StatusTuple(String id) {
+        this.id = id;
     }
 
     public StatusTuple() {
@@ -50,6 +70,7 @@ public class StatusTuple
         return "StatusTuple{" +
                 "id='" + id + '\'' +
                 ", status=" + status +
+                ", result=" + result +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package scheduler;
 
 import com.amazonaws.services.dynamodbv2.xspec.S;
+import data.Result;
 import data.Status;
 import data.StatusTuple;
 
@@ -30,6 +31,7 @@ public class JobCache {
 
         if (list!=null)
         {
+            list.remove(new StatusTuple(jobId));
             list.add(new StatusTuple(jobId,status));
         }
         else
@@ -37,6 +39,24 @@ public class JobCache {
             System.out.println("Not found "+ clientId + " " + jobId + " " + status);
         }
     }
+
+    public synchronized  void update(String clientId , String jobId, Status status, Result result)
+    {
+        Set<StatusTuple> list = map.get(clientId);
+
+        if (list!=null)
+        {
+            list.remove(new StatusTuple(jobId));
+            list.add(new StatusTuple(jobId,status, result));
+        }
+        else
+        {
+            System.out.println("Not found "+ clientId + " " + jobId + " " + status);
+        }
+
+        System.out.println(map);
+    }
+
 
 
 
