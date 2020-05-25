@@ -41,6 +41,18 @@ public class JobSubmitter {
         StatusResponse statusResponse = getStatus(statusRequest);
 
         System.out.println(statusResponse);
+
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        statusResponse = getStatus(statusRequest);
+
+        System.out.println(statusResponse);
+
+
     }
 
 
