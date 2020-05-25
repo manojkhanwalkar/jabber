@@ -1,20 +1,8 @@
 package data;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StatusResponse {
-
-    static class StatusTuple
-    {
-        String id;
-        Status status;
-
-        public StatusTuple(String id, Status status) {
-            this.id = id;
-            this.status = status;
-        }
-    }
 
 
     ArrayList<StatusTuple>  jobStatus = new ArrayList<>();
@@ -23,6 +11,13 @@ public class StatusResponse {
     {
         jobStatus.add(new StatusTuple(id,status));
     }
+
+    public void addStatus(StatusTuple tuple)
+    {
+        jobStatus.add(tuple);
+    }
+
+
 
 
     public ArrayList<StatusTuple> getJobStatus()

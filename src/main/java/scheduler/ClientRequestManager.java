@@ -1,14 +1,12 @@
 package scheduler;
 
-import data.StatusRequest;
-import data.StatusResponse;
-import data.SubmitRequest;
-import data.SubmitResponse;
+import data.*;
 
 import java.util.UUID;
 
 public class ClientRequestManager {
 
+    JobCache jobcache = new JobCache();
 
     public SubmitResponse submit(SubmitRequest submitRequest)
     {
@@ -16,12 +14,24 @@ public class ClientRequestManager {
         String jobId = UUID.randomUUID().toString();
         SubmitResponse response = new SubmitResponse(submitRequest.getClient(),jobId);
 
+        jobcache.add(submitRequest.getClient(), jobId, Status.Submitted );
+
         return response;
 
     }
 
     public StatusResponse status(StatusRequest request) {
 
-        return new StatusResponse();
+        StatusResponse response = new StatusResponse();
+
+        request.getJobIds().forEach(id->{
+
+            StatusTuple tuple = jobcache.get(request.getClient(),id );
+
+            response.addStatus(tuple);
+
+        });
+
+        return response;
     }
 }

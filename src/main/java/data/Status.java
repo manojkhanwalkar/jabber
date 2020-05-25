@@ -2,6 +2,6 @@ package data;
 
 public enum Status {
 
-    Submitted,Working,Complete
+    Submitted,Working,Complete,NotFound
 
 }
