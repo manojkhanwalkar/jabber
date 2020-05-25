@@ -37,9 +37,15 @@ public class Connection {
 
 
 
-    public String sendSimple(String request,String action) throws Exception
+    public String sendSimple(String request,String action)
     {
-        return post(request,action);
+        try {
+            return post(request,action);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
 

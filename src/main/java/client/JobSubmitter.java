@@ -6,10 +6,16 @@ import data.StatusResponse;
 import data.SubmitRequest;
 import data.SubmitResponse;
 import org.apache.commons.codec.binary.Base64;
+import util.Connection;
+import util.JSONUtil;
+import util.JarUtils;
 
 public class JobSubmitter {
 
     public static void main(String[] args) {
+
+        JobSubmitter submitter = new JobSubmitter();
+        submitter.test();
 
     }
 
@@ -18,7 +24,12 @@ public class JobSubmitter {
 
     public void test()
     {
-        //SubmitRequest request = new SubmitRequest(, "client1");
+        String jar = JarUtils.getBase64EncodedStringFromJar("/home/manoj/data/jabber/epi.jar");
+        SubmitRequest request = new SubmitRequest(jar, "client1","tmp.Test");
+
+        SubmitResponse response = submitJob(request);
+
+        System.out.println(response);
     }
 
 
@@ -26,7 +37,15 @@ public class JobSubmitter {
     {
         // send to scheduler a jar file and client name and get back a job id .
 
-        return null;
+        Connection app = new Connection("https://localhost:8480/");
+
+        String respStr =  app.sendSimple(JSONUtil.toJSON(request),"submit");
+
+        SubmitResponse response = (SubmitResponse)JSONUtil.fromJSON(respStr,SubmitResponse.class);
+
+        return response;
+
+        //return null;
 
     }
 

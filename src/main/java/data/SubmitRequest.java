@@ -4,10 +4,12 @@ public class SubmitRequest {
 
     String base64Jar;
     String client;
+    String jobClassName;
 
-    public SubmitRequest(String base64Jar, String client) {
+    public SubmitRequest(String base64Jar, String client, String jobClassName) {
         this.base64Jar = base64Jar;
         this.client = client;
+        this.jobClassName = jobClassName;
     }
 
     public SubmitRequest() {
@@ -28,5 +30,13 @@ public class SubmitRequest {
 
     public void setClient(String client) {
         this.client = client;
+    }
+
+    public String getJobClassName() {
+        return jobClassName;
+    }
+
+    public void setJobClassName(String jobClassName) {
+        this.jobClassName = jobClassName;
     }
 }

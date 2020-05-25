@@ -42,23 +42,18 @@ public class JarUtils {
 
     }
 
-    public static Object loadClassFromJar()
+    public static Object loadClassFromJar(String jarname,String jobClassName )
     {
         try {
             JarClassLoader jcl = new JarClassLoader();
-        jcl.add("/tmp/epirestored.jar"); // Load jar file
+        jcl.add(jarname); // Load jar file
 
         JclObjectFactory factory = JclObjectFactory.getInstance();
 // Create object of loaded class
-        Object obj = factory.create(jcl, "tmp.Test");
+        Object obj = factory.create(jcl, jobClassName);
 
 
-        Class c = obj.getClass();
 
-        Method method = c.getMethod("hello");
-
-
-            System.out.println(method.invoke(obj));
             return obj;
 
 
@@ -71,7 +66,7 @@ public class JarUtils {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
 
 
@@ -82,7 +77,35 @@ public class JarUtils {
         getJarFromBase64EncodedString("/tmp/epirestored.jar", str);
 
 
-        loadClassFromJar();
+        String jarName = "/tmp/epirestored.jar";
+
+        {
+
+            String jobClassName = "tmp.Test";
+            Object obj = loadClassFromJar(jarName, jobClassName);
+
+            Class c = obj.getClass();
+
+            Method method = c.getMethod("compute");
+
+
+            System.out.println(method.invoke(obj));
+
+        }
+
+        {
+
+            String jobClassName = "tmp.AnotherTest";
+            Object obj = loadClassFromJar(jarName, jobClassName);
+
+            Class c = obj.getClass();
+
+            Method method = c.getMethod("compute");
+
+
+            System.out.println(method.invoke(obj));
+
+        }
 
 
 
