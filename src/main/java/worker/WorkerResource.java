@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -40,15 +41,32 @@ public class WorkerResource {
 
     private void registerWorker()
     {
-        Connection app = new Connection("https://localhost:8480/");
 
-        String url = "https://localhost:8380/";
+        CompletableFuture.runAsync(()->{
 
-        RegisterWorker registerWorker = new RegisterWorker(url);
+            String respStr=null;
+            while(respStr==null) {
+                Connection app = new Connection("https://localhost:8480/");
 
-        String respStr =  app.sendSimple(JSONUtil.toJSON(registerWorker),"register");
+                String url = "https://localhost:8380/";
 
-        System.out.println(respStr);
+                RegisterWorker registerWorker = new RegisterWorker(url);
+
+                respStr = app.sendSimple(JSONUtil.toJSON(registerWorker), "register");
+
+                if (respStr==null)
+                {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        });
+
+
 
 
     }
