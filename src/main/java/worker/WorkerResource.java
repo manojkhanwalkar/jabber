@@ -2,6 +2,10 @@ package worker;
 
 
 
+import com.codahale.metrics.annotation.Timed;
+import data.WorkerRequest;
+import data.WorkerResponse;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -31,80 +35,23 @@ public class WorkerResource {
     }
 
 
-    /*
-    @POST
-    @Timed
-    @Path("/keyexchange")
-    @Produces(MediaType.APPLICATION_JSON)
-    public KeyExchange exchange(KeyExchange request) {
-
-
-        return keyExchangeManager.processExchange(request);
-
-
-    }
-
-
-    @GET
-    @Timed
-    @Path("/claimkey")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String exchange() {
-
-
-        return rsaKeyHolder.getPublicKeyStr();
-
-    }
-
-
-
+    WorkManager workManager = new WorkManager();
 
     @POST
     @Timed
-    @Path("/report")
+    @Path("/work")
     @Produces(MediaType.APPLICATION_JSON)
-    public EncryptedMessage verify(EncryptedMessage request) {
-
-        keyExchangeManager.verify(request);
+    public WorkerResponse work(WorkerRequest request) {
 
 
-        String requestStr = keyExchangeManager.decryptRequest(request);
-
-
-               // Encrypted Verified claim to be processed here .
-        EncryptedVerifiedClaim encryptedVerifiedClaim = (EncryptedVerifiedClaim) JSONUtil.fromJSON(requestStr,EncryptedVerifiedClaim.class);
-
-        VerifiedClaim claim = convert(encryptedVerifiedClaim,rsaKeyHolder.getPrivateKey());
-
-        isValidClaim(claim);
-
-        System.out.println(claim);
-
-        CombinedCreditScore combinedCreditScore = new CombinedCreditScore();
-
-
-        CreditManagerFactory creditManagerFactory = CreditManagerFactory.getInstance();
-
-        creditManagerFactory.get().parallelStream().forEach(creditManager -> {
-
-            CreditScore creditScore = creditManager.getCreditScore();
-            creditScore.setBureau(creditManager.bureau);
-            combinedCreditScore.addScore(creditScore);
-
-        });
-
-
-
-        String responseStr = JSONUtil.toJSON(combinedCreditScore);
-        EncryptedMessage response =  keyExchangeManager.encryptResponse(responseStr,request);
-        keyExchangeManager.sign(response);
-        return response;
+        return workManager.process(request);
 
 
     }
 
 
-*/
+
+
 
 
 

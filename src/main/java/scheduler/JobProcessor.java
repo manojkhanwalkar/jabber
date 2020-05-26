@@ -1,9 +1,8 @@
 package scheduler;
 
-import data.Priority;
-import data.Result;
-import data.Status;
-import data.SubmitRequest;
+import data.*;
+import util.Connection;
+import util.JSONUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,31 +30,6 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
     }
 
 
-/*    Priority priority;
-
-    public JobProcessor(Priority priority)
-    {
-        this.priority = priority;
-    }*/
-
-    @Override
- /*   public int compareTo(JobProcessor jobProcessor) {
-
-        if (this.priority== High)
-        {
-            return -1;
-        }
-
-        if (jobProcessor.priority==High)
-        {
-            return 1;
-        }
-
-        return 0;
-
-
-
-    }*/
 
      public int compareTo(JobProcessor jobProcessor)
     {
@@ -84,34 +58,56 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
         }
     }
 
- /*    public int compareTo(JobProcessor jobProcessor)
-    {
-        Priority curr = this.priority;
-
-        Priority next = jobProcessor.priority;
-
-        switch(curr)
-        {
-            case High:
-                return -1;
-
-            case Med :
-                if (next==Priority.Med || next==Priority.Low)
-                    return -1;
-                else
-                    return 1;
-            case Low :
-                if (next==Priority.Low)
-                    return -1;
-                else
-                    return 1;
-
-                default:
-                    return 0 ;
-        }
-    }*/
 
     private void process()
+    {
+        try {
+
+            WorkerRequest workerRequest = new WorkerRequest(submitRequest.getBase64Jar(),jobId,submitRequest.getJobClassName());
+
+            WorkerResponse workerResponse = submitJob(workerRequest);
+
+
+            jobcache.update(submitRequest.getClient(), jobId, Status.Complete,workerResponse.getJobStatus().getResult());
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            jobManager.complete();
+        }
+
+
+
+    }
+
+
+    private WorkerResponse submitJob(WorkerRequest request)
+    {
+        // send to scheduler a jar file and client name and get back a job id .
+
+        Connection app = new Connection("https://localhost:8380/");
+
+        String respStr =  app.sendSimple(JSONUtil.toJSON(request),"work");
+
+        WorkerResponse response = (WorkerResponse)JSONUtil.fromJSON(respStr,WorkerResponse.class);
+
+        return response;
+
+
+    }
+
+
+    public void run()
+    {
+            process();
+    }
+
+
+    /*
+
+     private void process()
     {
         try {
 
@@ -146,42 +142,8 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
 
     }
 
+     */
 
-    public void run()
-    {
-            process();
-    }
-
-
-   /* public static void main(String[] args) {
-
-        PriorityQueue<JobProcessor> queue = new PriorityQueue<>();
-
-        for (int i=0;i<10;i++)
-        {
-            queue.add(new JobProcessor(Low));
-        }
-
-        System.out.println(queue.remove().priority);
-
-        System.out.println(queue.remove().priority);
-
-
-        for (int i=0;i<10;i++)
-        {
-            queue.add(new JobProcessor(High));
-        }
-
-
-
-        while(!queue.isEmpty())
-        {
-            System.out.println(queue.remove().priority);
-        }
-
-
-
-    }*/
 
 
 }
