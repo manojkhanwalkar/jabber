@@ -14,6 +14,8 @@ public class ClientRequestManager {
 
     JobCache jobcache = new JobCache();
 
+    JobManager jobManager = new JobManager();
+
     public SubmitResponse submit(SubmitRequest submitRequest)
     {
 
@@ -23,8 +25,7 @@ public class ClientRequestManager {
         jobcache.add(submitRequest.getClient(), jobId, Status.Submitted );
 
 
-        CompletableFuture.runAsync(new JobProcessor(submitRequest,jobId,jobcache));
-
+        jobManager.submit(submitRequest,jobId,jobcache);
 
         return response;
 

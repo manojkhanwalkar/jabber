@@ -35,7 +35,7 @@ public class JobSubmitter {
 
         for (int i=0;i<10;i++) {
             String jar = JarUtils.getBase64EncodedStringFromJar("/home/manoj/data/jabber/epi.jar");
-            SubmitRequest request = new SubmitRequest(jar, "client1", "tmp.Test");
+            SubmitRequest request = new SubmitRequest(jar, "client1", "tmp.Test", Priority.Low);
             SubmitResponse response = submitJob(request);
 
             System.out.println(response);
@@ -45,7 +45,7 @@ public class JobSubmitter {
 
         for (int i=0;i<10;i++) {
             String jar = JarUtils.getBase64EncodedStringFromJar("/home/manoj/data/jabber/epi.jar");
-            SubmitRequest request = new SubmitRequest(jar, "client1", "tmp.AnotherTest");
+            SubmitRequest request = new SubmitRequest(jar, "client1", "tmp.AnotherTest", Priority.High);
             SubmitResponse response = submitJob(request);
 
             System.out.println(response);
@@ -122,6 +122,7 @@ public class JobSubmitter {
                 Result result = st.getResult();
                 if (result!=null)
                 {
+                    System.out.println(st);
                     jobids.remove(st.getId());
                 }
             });
@@ -151,7 +152,7 @@ public class JobSubmitter {
 
             StatusRequest statusRequest = new StatusRequest(jobids,"client1");
             StatusResponse statusResponse = getStatus(statusRequest);
-            System.out.println(statusResponse);
+           // System.out.println(statusResponse);
 
             processResponse(statusResponse);
 

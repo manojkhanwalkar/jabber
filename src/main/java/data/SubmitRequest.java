@@ -6,10 +6,11 @@ public class SubmitRequest {
     String client;
     String jobClassName;
 
-    public SubmitRequest(String base64Jar, String client, String jobClassName) {
+    public SubmitRequest(String base64Jar, String client, String jobClassName, Priority priority) {
         this.base64Jar = base64Jar;
         this.client = client;
         this.jobClassName = jobClassName;
+        this.priority=priority;
     }
 
     public SubmitRequest() {
@@ -38,5 +39,16 @@ public class SubmitRequest {
 
     public void setJobClassName(String jobClassName) {
         this.jobClassName = jobClassName;
+    }
+
+
+    Priority priority = Priority.Low;
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 }
