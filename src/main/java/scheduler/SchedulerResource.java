@@ -3,10 +3,7 @@ package scheduler;
 
 
 import com.codahale.metrics.annotation.Timed;
-import data.StatusRequest;
-import data.StatusResponse;
-import data.SubmitRequest;
-import data.SubmitResponse;
+import data.*;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -47,6 +44,21 @@ public class SchedulerResource {
 
 
     }
+
+    @POST
+    @Timed
+    @Path("/register")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String register(RegisterWorker registerWorker) {
+
+
+        System.out.println("Registered " + registerWorker.getUrl());
+        WorkerLoadBalancer.getInstance().register(registerWorker.getUrl());
+        return "success";
+
+
+    }
+
 
 
     @POST

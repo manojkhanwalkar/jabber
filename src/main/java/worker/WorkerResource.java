@@ -3,8 +3,12 @@ package worker;
 
 
 import com.codahale.metrics.annotation.Timed;
+import data.RegisterWorker;
+import data.SubmitResponse;
 import data.WorkerRequest;
 import data.WorkerResponse;
+import util.Connection;
+import util.JSONUtil;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -30,6 +34,21 @@ public class WorkerResource {
         this.template = template;
         this.defaultName = defaultName;
 
+
+        registerWorker();
+    }
+
+    private void registerWorker()
+    {
+        Connection app = new Connection("https://localhost:8480/");
+
+        String url = "https://localhost:8380/";
+
+        RegisterWorker registerWorker = new RegisterWorker(url);
+
+        String respStr =  app.sendSimple(JSONUtil.toJSON(registerWorker),"register");
+
+        System.out.println(respStr);
 
 
     }

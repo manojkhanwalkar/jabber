@@ -87,7 +87,19 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
     {
         // send to scheduler a jar file and client name and get back a job id .
 
-        Connection app = new Connection("https://localhost:8380/");
+
+        Connection app=WorkerLoadBalancer.getInstance().getNextWorker();
+
+        while(app==null)
+        {
+            try {
+                System.out.println("No worker found");
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            app = WorkerLoadBalancer.getInstance().getNextWorker();
+        }
 
         String respStr =  app.sendSimple(JSONUtil.toJSON(request),"work");
 
