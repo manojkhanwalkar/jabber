@@ -61,4 +61,10 @@ public class ClientRequestManager {
     {
         System.out.println(jobcache);
     }
+
+    public String response(WorkerResponse response) {
+
+        jobManager.processResponse(response);
+        return "Received";
+    }
 }

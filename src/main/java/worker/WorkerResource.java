@@ -87,10 +87,12 @@ public class WorkerResource {
     @Timed
     @Path("/work")
     @Produces(MediaType.APPLICATION_JSON)
-    public WorkerResponse work(WorkerRequest request) {
+    public String work(WorkerRequest request) {
 
 
-        return workManager.process(request);
+         workManager.process(request);
+
+         return "submitted";
 
 
     }

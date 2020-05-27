@@ -72,18 +72,15 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
 
             WorkerRequest workerRequest = new WorkerRequest(submitRequest.getBase64Jar(),jobId,submitRequest.getJobClassName());
 
-            WorkerResponse workerResponse = submitJob(workerRequest);
+            submitJob(workerRequest);
 
-
-            jobcache.update(submitRequest.getClient(), jobId, Status.Complete,workerResponse.getJobStatus().getResult());
-            jobManager.workingJobTracker.remove(jobId);
 
 
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            jobManager.complete();
+            //jobManager.complete();
         }
 
 
@@ -91,7 +88,7 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
     }
 
 
-    private WorkerResponse submitJob(WorkerRequest request)
+    private void submitJob(WorkerRequest request)
     {
         // send to scheduler a jar file and client name and get back a job id .
 
@@ -111,9 +108,9 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
 
         String respStr =  app.sendSimple(JSONUtil.toJSON(request),"work");
 
-        WorkerResponse response = (WorkerResponse)JSONUtil.fromJSON(respStr,WorkerResponse.class);
+      /*  WorkerResponse response = (WorkerResponse)JSONUtil.fromJSON(respStr,WorkerResponse.class);
 
-        return response;
+        return response;*/
 
 
     }

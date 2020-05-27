@@ -53,6 +53,19 @@ public class SchedulerResource {
 
     }
 
+
+    @POST
+    @Timed
+    @Path("/response")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String response(WorkerResponse response) {
+
+
+        return clientRequestManager.response(response);
+
+
+    }
+
     @POST
     @Timed
     @Path("/register")

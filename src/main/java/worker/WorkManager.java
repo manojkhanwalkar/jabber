@@ -1,10 +1,13 @@
 package worker;
 
 import data.*;
+import util.Connection;
+import util.JSONUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static util.JarUtils.getJarFromBase64EncodedString;
 import static util.JarUtils.loadClassFromJar;
@@ -13,7 +16,12 @@ public class WorkManager {
 
 
 
-    public WorkerResponse process(WorkerRequest request) {
+    public void process(WorkerRequest request) {
+
+
+        CompletableFuture.runAsync(()->{
+
+
 
 
         try {
@@ -35,7 +43,8 @@ public class WorkManager {
             WorkerResponse response = new WorkerResponse();
             response.setJobStatus(new StatusTuple(request.getJobId(),Status.Complete,result));
 
-            return response;
+            sendResponse(response);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
@@ -46,7 +55,26 @@ public class WorkManager {
             e.printStackTrace();
         }
 
-        return null;
+        });
+
+
+
 
     }
+
+
+    private void sendResponse(WorkerResponse response)
+    {
+
+
+                Connection app = new Connection("https://localhost:8480/");
+
+
+                app.sendSimple(JSONUtil.toJSON(response), "response");
+
+
+
+
+    }
+
 }
