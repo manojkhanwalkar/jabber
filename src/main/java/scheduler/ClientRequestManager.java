@@ -12,9 +12,16 @@ import static util.JarUtils.loadClassFromJar;
 
 public class ClientRequestManager {
 
-    JobCache jobcache = new JobCache();
+    JobCache jobcache ;
 
-    JobManager jobManager = new JobManager();
+    JobManager jobManager ;
+
+
+    public ClientRequestManager()
+    {
+        jobcache = new JobCache();
+        jobManager = new JobManager(jobcache);
+    }
 
     public SubmitResponse submit(SubmitRequest submitRequest)
     {
@@ -25,7 +32,7 @@ public class ClientRequestManager {
         jobcache.add(submitRequest.getClient(), jobId, Status.Submitted );
 
 
-        jobManager.submit(submitRequest,jobId,jobcache);
+        jobManager.submit(submitRequest,jobId);
 
         return response;
 

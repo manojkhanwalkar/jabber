@@ -63,12 +63,20 @@ public class JobProcessor implements Runnable, Comparable<JobProcessor>
     {
         try {
 
+
+            jobcache.update(submitRequest.getClient(), jobId, Status.Working);
+
+            jobManager.workingJobTracker.add(submitRequest,jobId);
+
+
+
             WorkerRequest workerRequest = new WorkerRequest(submitRequest.getBase64Jar(),jobId,submitRequest.getJobClassName());
 
             WorkerResponse workerResponse = submitJob(workerRequest);
 
 
             jobcache.update(submitRequest.getClient(), jobId, Status.Complete,workerResponse.getJobStatus().getResult());
+            jobManager.workingJobTracker.remove(jobId);
 
 
 

@@ -12,9 +12,19 @@ public class JobManager {
 
    PriorityQueue<JobProcessor> queue = new PriorityQueue<>();
 
+    WorkingJobTracker workingJobTracker ;
+
+    JobCache jobcache;
+
+    public JobManager(JobCache jobcache)
+    {
+        this.jobcache = jobcache;
+
+        workingJobTracker = new WorkingJobTracker(this);
+    }
 
 
-    public synchronized void submit(SubmitRequest submitRequest, String jobId, JobCache jobcache)
+    public synchronized void submit(SubmitRequest submitRequest, String jobId)
     {
         JobProcessor jobProcessor = new JobProcessor(submitRequest,jobId,jobcache,this);
 
