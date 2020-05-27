@@ -48,4 +48,10 @@ public class ClientRequestManager {
 
         return response;
     }
+
+
+    public void stop()
+    {
+        System.out.println(jobcache);
+    }
 }

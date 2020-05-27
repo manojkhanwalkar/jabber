@@ -30,6 +30,14 @@ public class SchedulerResource {
         this.template = template;
         this.defaultName = defaultName;
         clientRequestManager = new ClientRequestManager();
+
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
+                clientRequestManager.stop();
+            }
+        });
     }
 
 
