@@ -33,7 +33,7 @@ public class JobSubmitter {
         ArrayList<String> jobids = new ArrayList<>();
 
 
-        for (int i=0;i<10;i++) {
+        for (int i=0;i<2;i++) {
             String jar = JarUtils.getBase64EncodedStringFromJar("/home/manoj/data/jabber/epi.jar");
             SubmitRequest request = new SubmitRequest(jar, "client1", "tmp.Test", Priority.Low);
             SubmitResponse response = submitJob(request);
@@ -43,7 +43,7 @@ public class JobSubmitter {
 
         }
 
-        for (int i=0;i<10;i++) {
+        for (int i=0;i<2;i++) {
             String jar = JarUtils.getBase64EncodedStringFromJar("/home/manoj/data/jabber/epi.jar");
             SubmitRequest request = new SubmitRequest(jar, "client1", "tmp.AnotherTest", Priority.High);
             SubmitResponse response = submitJob(request);

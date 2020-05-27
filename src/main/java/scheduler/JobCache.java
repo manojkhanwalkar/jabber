@@ -10,6 +10,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class JobCache {
 
+    CompletedJobEvictor completedJobEvictor ;
+
+    public JobCache()
+    {
+        completedJobEvictor = new CompletedJobEvictor(this);
+    }
+
 
     Map<String, Set<StatusTuple>>  map = new HashMap<>();
 
@@ -47,14 +54,25 @@ public class JobCache {
         if (list!=null)
         {
             list.remove(new StatusTuple(jobId));
-            list.add(new StatusTuple(jobId,status, result));
+
+            StatusTuple st = new StatusTuple(jobId,status, result);
+            list.add(st);
+            completedJobEvictor.add(st,clientId);
         }
         else
         {
             System.out.println("Not found "+ clientId + " " + jobId + " " + status);
         }
 
-        System.out.println(map);
+    //    System.out.println(map);
+    }
+
+
+    public synchronized void remove(StatusTuple statusTuple,String clientId)
+    {
+        Set<StatusTuple> list = map.get(clientId);
+        list.remove(statusTuple);
+
     }
 
 
@@ -74,5 +92,10 @@ public class JobCache {
         return new StatusTuple(jobId,Status.NotFound);
     }
 
-
+    @Override
+    public String toString() {
+        return "JobCache{" +
+                "map=" + map +
+                '}';
+    }
 }
