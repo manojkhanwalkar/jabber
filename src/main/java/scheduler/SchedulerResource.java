@@ -59,6 +59,20 @@ public class SchedulerResource {
 
     }
 
+    @POST
+    @Timed
+    @Path("/deregister")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deregister(DeRegisterWorker registerWorker) {
+
+
+        System.out.println("DeRegistered " + registerWorker.getUrl());
+        WorkerLoadBalancer.getInstance().deregister(registerWorker.getUrl());
+        return "success";
+
+
+    }
+
 
 
     @POST

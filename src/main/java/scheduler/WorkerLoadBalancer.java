@@ -35,6 +35,15 @@ public class WorkerLoadBalancer {
 
     }
 
+    public synchronized void deregister(String url)
+    {
+
+        //     Connection app = new Connection("https://localhost:8380/");
+
+        workers.remove(url);
+
+    }
+
     public synchronized Connection getNextWorker()
     {
         if (!workers.isEmpty()) {

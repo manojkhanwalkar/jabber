@@ -40,6 +40,15 @@ public class WorkerApplication extends Application<WorkerConfiguration> {
         environment.jersey().register(resource);
       //  environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());
 
-    }
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
+                resource.deregisterWorker();
+            }
+        });
+
+
+}
 
 }
