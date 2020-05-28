@@ -33,7 +33,7 @@ public class WorkerResource {
         this.defaultName = defaultName;
 
 
-        registerWorker();
+        registerWorkerandHealthCheck();
     }
 
 
@@ -46,35 +46,78 @@ public class WorkerResource {
 
         app.sendSimple(JSONUtil.toJSON(registerWorker), "deregister");
 
+
     }
+
 
     private void registerWorker()
     {
 
-        CompletableFuture.runAsync(()->{
+        String respStr = null;
+        while (respStr == null) {
+            Connection app = new Connection("https://localhost:8480/");
 
-            String respStr=null;
-            while(respStr==null) {
-                Connection app = new Connection("https://localhost:8480/");
+            String url = "https://localhost:8380/";
 
-                String url = "https://localhost:8380/";
+            RegisterWorker registerWorker = new RegisterWorker(url);
 
-                RegisterWorker registerWorker = new RegisterWorker(url);
+            respStr = app.sendSimple(JSONUtil.toJSON(registerWorker), "register");
 
-                respStr = app.sendSimple(JSONUtil.toJSON(registerWorker), "register");
-
-                if (respStr==null)
-                {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            if (respStr == null) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
+        }
+
+    }
+
+
+
+    private void registerWorkerandHealthCheck()
+    {
+
+        CompletableFuture.runAsync(()->{
+
+            while(true) {
+
+                registerWorker();
+
+                waitForHealthCheckFail();
+
+
+
+                }
+
+
 
         });
 
+
+
+
+    }
+
+
+    private void waitForHealthCheckFail()
+    {
+        String respStr = null;
+        do {
+            Connection app = new Connection("https://localhost:8481/");
+
+
+            respStr = app.get("healthcheck");
+
+            if (respStr != null) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } while (respStr != null);
 
 
 

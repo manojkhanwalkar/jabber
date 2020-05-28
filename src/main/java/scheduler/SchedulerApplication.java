@@ -3,7 +3,7 @@ package scheduler;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
+import util.AppHealthCheck;
 
 
 public class SchedulerApplication extends Application<SchedulerConfiguration> {
@@ -39,7 +39,7 @@ public class SchedulerApplication extends Application<SchedulerConfiguration> {
         creditManagerFactory.init();*/
 
         environment.jersey().register(resource);
-      //  environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());
+        environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());
 
     }
 

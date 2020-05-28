@@ -73,20 +73,26 @@ public class Connection {
 
 
 
-    public String get( String url) throws Exception
+    public String get( String url)
     {
 
-        HttpRequest httprequest = HttpRequest.newBuilder()
-                .uri(URI.create(target + url))
-                .GET()
-                .timeout(Duration.ofMinutes(1))
-                .build();
+        try {
+            HttpRequest httprequest = HttpRequest.newBuilder()
+                    .uri(URI.create(target + url))
+                    .GET()
+                    .timeout(Duration.ofMinutes(1))
+                    .build();
 
 
-        HttpResponse<String> response =
-                client.send(httprequest, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response =
+                    client.send(httprequest, HttpResponse.BodyHandlers.ofString());
 
-        return response.body();
+            return response.body();
+
+        } catch (Exception ex)
+        {
+            return null;
+        }
 
 
     }
