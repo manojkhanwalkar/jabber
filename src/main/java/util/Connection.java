@@ -42,7 +42,7 @@ public class Connection {
         try {
             return post(request,action);
         } catch (Exception e) {
-            e.printStackTrace();
+          //  e.printStackTrace();
 
             return null;
         }

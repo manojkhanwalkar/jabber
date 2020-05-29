@@ -80,12 +80,16 @@ public class JobSubmitter {
 
         String respStr =  app.sendSimple(JSONUtil.toJSON(request),"submit");
 
-        SubmitResponse response = (SubmitResponse)JSONUtil.fromJSON(respStr,SubmitResponse.class);
+        if (respStr!=null) {
 
-        return response;
+            SubmitResponse response = (SubmitResponse) JSONUtil.fromJSON(respStr, SubmitResponse.class);
 
-        //return null;
+            return response;
+        }
+        else {
 
+            return null;
+        }
     }
 
 
@@ -110,26 +114,35 @@ public class JobSubmitter {
 
             String respStr =  app.sendSimple(JSONUtil.toJSON(statusRequest),"status");
 
-            StatusResponse response = (StatusResponse)JSONUtil.fromJSON(respStr,StatusResponse.class);
+            if (respStr!=null) {
 
-            return response;
+                StatusResponse response = (StatusResponse) JSONUtil.fromJSON(respStr, StatusResponse.class);
+
+                return response;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private void processResponse(StatusResponse statusResponse)
         {
-            statusResponse.getJobStatus().stream().forEach(st->{
+            if (statusResponse!=null) {
+                statusResponse.getJobStatus().stream().forEach(st -> {
 
-                Result result = st.getResult();
-                if (result!=null)
-                {
-                    System.out.println(st);
-                    jobids.remove(st.getId());
-                }
-            });
+                    Result result = st.getResult();
+                    if (result != null) {
+                        System.out.println(st);
+                        jobids.remove(st.getId());
+                    }
+                });
+
+            }
 
             if (!jobids.isEmpty())
             {
-                Future<Void> future = CompletableFuture.runAsync(new StatusTracker(jobids,responseRecd,lock));
+                CompletableFuture.runAsync(new StatusTracker(jobids,responseRecd,lock));
 
             }
             else
@@ -152,7 +165,7 @@ public class JobSubmitter {
 
             StatusRequest statusRequest = new StatusRequest(jobids,"client1");
             StatusResponse statusResponse = getStatus(statusRequest);
-           // System.out.println(statusResponse);
+          //  System.out.println(statusResponse);
 
             processResponse(statusResponse);
 
