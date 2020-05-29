@@ -4,6 +4,8 @@ import com.amazonaws.services.dynamodbv2.xspec.S;
 import data.Result;
 import data.Status;
 import data.StatusTuple;
+import scheduler.persistence.FilePersistenceManager;
+import scheduler.persistence.Record;
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -12,10 +14,13 @@ public class JobCache {
 
     CompletedJobEvictor completedJobEvictor ;
 
+    FilePersistenceManager filePersistenceManager ;
 
-    public JobCache()
+    public JobCache(FilePersistenceManager filePersistenceManager)
     {
         completedJobEvictor = new CompletedJobEvictor(this);
+
+        this.filePersistenceManager = filePersistenceManager;
     }
 
 

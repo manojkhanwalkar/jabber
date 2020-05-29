@@ -25,7 +25,7 @@ public class WorkManager {
 
 
         try {
-            Thread.sleep(5000);
+            //Thread.sleep(5000);
 
             String jarName = "/tmp/"+ UUID.randomUUID().toString()+"*.jar";
             getJarFromBase64EncodedString(jarName, request.getBase64Jar());
@@ -45,8 +45,7 @@ public class WorkManager {
 
             sendResponse(response);
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

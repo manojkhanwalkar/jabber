@@ -3,6 +3,7 @@ package scheduler;
 import data.Status;
 import data.SubmitRequest;
 import data.WorkerResponse;
+import scheduler.persistence.Record;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +59,9 @@ public class JobManager {
         SubmitRequest submitRequest = jobProcessor.submitRequest;
 
         jobcache.update(submitRequest.getClient(), jobId, Status.Complete,workerResponse.getJobStatus().getResult());
+
+        jobcache.filePersistenceManager.persist(Record.makeRecord(submitRequest.getClient(),jobId,workerResponse.getJobStatus().getResult()));
+
 
         workingJobTracker.remove(jobId);
 
