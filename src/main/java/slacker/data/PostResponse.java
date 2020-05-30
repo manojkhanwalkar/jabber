@@ -40,6 +40,14 @@ public final class PostResponse {
         this.userId = userId;
     }
 
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
     public PostResponse() {
     }
 

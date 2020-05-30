@@ -7,6 +7,7 @@ import util.JSONUtil;
 import util.JarUtils;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -14,10 +15,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PostSubmitter {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         PostSubmitter submitter = new PostSubmitter();
         submitter.test();
+
+
+        Thread.sleep(10000);
 
     }
 
@@ -27,18 +31,31 @@ public class PostSubmitter {
     public void test()
     {
 
-        PostRequest postRequest = new PostRequest();
-        postRequest.setChannelId("C1");
-        postRequest.setUserId("U1");
-        postRequest.setPost("P1");
-
-        submitPost(postRequest);
-
+        for (int i=0;i<100;i++) {
+            CompletableFuture.runAsync(new SubmitTask());
+        }
 
     }
 
 
-    private void submitPost(PostRequest request)
+    static class SubmitTask implements Runnable
+    {
+
+        Random random = new Random();
+        public void run()
+        {
+            PostRequest postRequest = new PostRequest();
+            postRequest.setChannelId("C" + random.nextInt(10));
+            postRequest.setUserId("U" + random.nextInt(10));
+            postRequest.setPost("P" + random.nextInt(Integer.MAX_VALUE));
+
+            submitPost(postRequest);
+
+        }
+    }
+
+
+    private static void submitPost(PostRequest request)
     {
         // send to scheduler a jar file and client name and get back a job id .
 
