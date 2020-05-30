@@ -43,6 +43,13 @@ public final class PostResponse {
     public PostResponse() {
     }
 
-
-
+    @Override
+    public String toString() {
+        return "PostResponse{" +
+                "channelId='" + channelId + '\'' +
+                ", post='" + post + '\'' +
+                ", userId='" + userId + '\'' +
+                ", messageId='" + messageId + '\'' +
+                '}';
+    }
 }

@@ -20,6 +20,8 @@ public class PostManager {
 
             });
 
+
+
             posts.addLast(post);
 
 
@@ -50,7 +52,7 @@ public class PostManager {
             {
                 Post curr = iterator.next();
                 String currMessageId = curr.getMessageId();
-                if(currMessageId.equals(messageId)) {
+                if(messageId!=null && currMessageId.equals(messageId)) {
                     break;
                 }
 

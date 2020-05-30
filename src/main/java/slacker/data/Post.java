@@ -1,5 +1,7 @@
 package slacker.data;
 
+import java.util.UUID;
+
 public final class Post {
 
     String channelId;
@@ -54,11 +56,25 @@ public final class Post {
 
     public static Post create(PostRequest postRequest)
     {
+        Post post = new Post();
+        post.channelId=postRequest.getChannelId();
+        post.userId = postRequest.getUserId();
+        post.post = postRequest.getPost();
 
+        post.messageId = UUID.randomUUID().toString();
+
+        return post;
     }
 
     public static PostResponse create(Post post)
     {
+        PostResponse response = new PostResponse();
+        response.channelId=post.channelId;
+        response.messageId=post.messageId;
+        response.post=post.post;
+        response.userId = post.userId;
+
+        return response;
 
     }
 }

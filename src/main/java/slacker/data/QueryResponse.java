@@ -33,4 +33,12 @@ public class QueryResponse {
 
         postResponses.add(response);
     }
+
+    @Override
+    public String toString() {
+        return "QueryResponse{" +
+                "postResponses=" + postResponses +
+                ", lastMessageId='" + lastMessageId + '\'' +
+                '}';
+    }
 }
