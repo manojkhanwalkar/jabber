@@ -8,6 +8,7 @@ import util.JSONUtil;
 import util.JarUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
@@ -31,37 +32,55 @@ public class PostQueryer {
     public void test()
     {
 
-            QueryTask task = new QueryTask();
+            QueryTask task = new QueryTask(this);
 
             for (int i=0;i<10;i++)
             {
                 CompletableFuture.runAsync(task);
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
 
 
     }
 
+    volatile String[] nextMessageIds = new String[10];
+
 
     static class QueryTask implements Runnable
     {
 
-        AtomicInteger channelCount= new AtomicInteger(0);
 
-        public QueryTask()
+        PostQueryer parent;
+        public QueryTask(PostQueryer parent)
         {
+            this.parent = parent;
 
         }
         public void run()
         {
-            QueryRequest queryRequest = new QueryRequest();
 
-            queryRequest.setChannelId("C" + channelCount.getAndIncrement()%10);
+            try {
+                for (int i=0;i<10;i++) {
+                    QueryRequest queryRequest = new QueryRequest();
 
-            QueryResponse response = submitJob(queryRequest);
+                    queryRequest.setChannelId("C" + i);
+                    queryRequest.setLastMessageId(parent.nextMessageIds[i]);
 
-            System.out.println(response);
+                    QueryResponse response = submitJob(queryRequest);
 
+                    System.out.println(response);
+
+                    parent.nextMessageIds[i]= response.getLastMessageId();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
