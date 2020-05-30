@@ -10,6 +10,9 @@ import util.JarUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -32,18 +35,12 @@ public class PostQueryer {
     public void test()
     {
 
+        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(5);
+
             QueryTask task = new QueryTask(this);
 
-            for (int i=0;i<10;i++)
-            {
-                CompletableFuture.runAsync(task);
+            scheduledThreadPool.scheduleWithFixedDelay(task,5,5, TimeUnit.SECONDS);
 
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
 
 
 

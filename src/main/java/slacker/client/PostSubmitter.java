@@ -9,6 +9,9 @@ import util.JarUtils;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,10 +21,12 @@ public class PostSubmitter {
     public static void main(String[] args) throws Exception {
 
         PostSubmitter submitter = new PostSubmitter();
-        submitter.test();
 
+        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(5);
+        scheduledThreadPool.scheduleAtFixedRate(()-> submitter.test(),10,10, TimeUnit.SECONDS);
 
-        Thread.sleep(10000);
+      //  submitter.test();
+
 
     }
 
@@ -30,6 +35,8 @@ public class PostSubmitter {
 
     public void test()
     {
+
+
 
         for (int i=0;i<100;i++) {
             CompletableFuture.runAsync(new SubmitTask());
