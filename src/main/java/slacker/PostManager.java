@@ -3,11 +3,44 @@ package slacker;
 import slacker.data.*;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.*;
 
 public class PostManager {
 
-    Map<String, Deque<Post>> channelPosts = new HashMap<>();
+    Map<String, Deque<Post>> channelPosts = new ConcurrentHashMap<>();
+
+
+    public PostManager()
+    {
+        ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(1);
+        scheduledThreadPool.scheduleWithFixedDelay(new Reaper(channelPosts),10,10, TimeUnit.SECONDS);
+    }
+
+    static class Reaper implements Runnable
+    {
+        Map<String, Deque<Post>> channelPosts ;
+
+        public Reaper(Map<String, Deque<Post>> channelPosts) {
+            this.channelPosts = channelPosts;
+        }
+
+        public void run()
+        {
+            System.out.println("Running reaper");
+            channelPosts.entrySet().stream().map(e->e.getValue()).forEach(list->{
+                int size = list.size()-10;
+
+                if (size>0)
+                {
+                    System.out.println("Excess Size is " + size);
+                    for (int i=0;i<size;i++)
+                    {
+                        list.remove();
+                    }
+                }
+            });
+        }
+    }
 
     public void process(PostRequest request) {
 
