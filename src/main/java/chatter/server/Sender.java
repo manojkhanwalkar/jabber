@@ -6,10 +6,14 @@ import util.JSONUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousSocketChannel;
 
 public class Sender {
 
-    PrintWriter out;
+   PrintWriter out;
+
+
 
     public Sender(Socket socket) {
 
@@ -19,9 +23,14 @@ public class Sender {
             e.printStackTrace();
         }
 
-       /* // Write out our header to the client
-        out.println( "Echo Server 1.0" );
-        out.flush();*/
+
+    }
+
+    AsynchronousSocketChannel channel;
+
+    public Sender(AsynchronousSocketChannel channel) {
+
+        this.channel = channel;
     }
 
 
@@ -30,4 +39,24 @@ public class Sender {
         out.println(JSONUtil.toJSON(packet));
         out.flush();
     }
+
+    public synchronized  void niosend(Packet packet)
+    {
+        String str = JSONUtil.toJSON(packet) + "\n";
+
+        channel.write( ByteBuffer.wrap( str.getBytes() ) );
+
+        System.out.println("Completed writing");
+
+
+
+    }
+
+
+
+
+
+
+
+
 }

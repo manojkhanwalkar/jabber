@@ -41,4 +41,14 @@ public class Packet {
         this.to = to;
         this.message = message;
     }
+
+
+    @Override
+    public String toString() {
+        return "Packet{" +
+                "from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

@@ -129,7 +129,7 @@ public class SocketClient
         try
         {
             // Connect to the server
-             socket = new Socket( server, 9000 );
+             socket = new Socket( server, 5000 );
 
             ConsoleHandler consoleHandler = new ConsoleHandler(socket);
 
