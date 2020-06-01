@@ -6,10 +6,10 @@ import java.util.concurrent.Executors;
 public class ChatServer {
 
 
-   /* public static void main( String[] args )
+    public static void main( String[] args )
     {
 
-        int port = 9000;
+        int port = 5000;
 
         System.out.println( "Start server on port: " + port );
 
@@ -24,10 +24,10 @@ public class ChatServer {
         }));
 
 
-    }*/
+    }
 
 
-    public static void main(String[] args) throws Exception {
+ /*   public static void main(String[] args) throws Exception {
 
         NIO2SimpleSocketServer server = new NIO2SimpleSocketServer();
 
@@ -47,5 +47,5 @@ public class ChatServer {
             Thread.sleep(1000);
         }
 
-    }
+    }*/
 }

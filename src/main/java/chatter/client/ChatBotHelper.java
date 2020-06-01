@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ChatBotHelper
 {
@@ -101,6 +103,7 @@ public class ChatBotHelper
         }
 
 
+        ExecutorService pool = Executors.newFixedThreadPool(10);
         public void process(String query) {
 
             CompletableFuture.runAsync(() -> {
@@ -119,7 +122,7 @@ public class ChatBotHelper
 
                     out.flush();
                 }
-            });
+            }, pool);
 
 
         }

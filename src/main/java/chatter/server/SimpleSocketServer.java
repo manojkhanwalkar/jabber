@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SimpleSocketServer extends Thread
 {
@@ -45,6 +47,8 @@ public class SimpleSocketServer extends Thread
         this.interrupt();
     }
 
+    ExecutorService pool = Executors.newFixedThreadPool(100);
+
     @Override
     public void run()
     {
@@ -61,7 +65,7 @@ public class SimpleSocketServer extends Thread
                 // Pass the socket to the RequestHandler thread for processing
                 RequestHandler requestHandler = new RequestHandler( socket, userManager );
 
-                CompletableFuture.runAsync(requestHandler);
+                CompletableFuture.runAsync(requestHandler,pool);
 
             }
             catch (IOException e)
@@ -107,6 +111,8 @@ class RequestHandler implements Runnable
             }
 
             while(true) {
+
+              //  Thread.sleep(100);
                 String line = in.readLine();
                 if (line != null && line.length() > 0) {
                     Packet packet = (Packet)JSONUtil.fromJSON(line,Packet.class);
