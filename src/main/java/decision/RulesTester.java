@@ -11,7 +11,7 @@ public class RulesTester {
 
 
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
 
         RuleSet ruleSet = RuleSet.testSet("Rule1");
 
@@ -35,6 +35,6 @@ public class RulesTester {
        System.out.println(result);
 
 
-    }
+    }*/
 
 }

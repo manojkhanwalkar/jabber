@@ -2,6 +2,8 @@ package decision.wf;
 
 import decision.data.DecisionRequest;
 import decision.data.DecisionResponse;
+import decision.engine.RuleSet;
+import decision.service.S1;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +20,9 @@ public class WorkflowManager {
 
         var workflow = workflows.get(name);
 
+        return WorkflowEvaluator.process(workflow,request);
 
 
-        DecisionResponse decisionResponse = new DecisionResponse();
-
-        decisionResponse.setRequestId(request.getRequestId());
-        decisionResponse.setResponseId(UUID.randomUUID().toString());
-
-        return decisionResponse;
 
 
     }
@@ -35,5 +32,17 @@ public class WorkflowManager {
     {
 
         workflows.put(name,servicesAndRules);
+    }
+
+
+    public void init()
+    {
+
+        RuleSet ruleSet = RuleSet.testSet("Rule1");
+
+
+        ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(new S1(),ruleSet);
+
+        addWorkFlow("WF1",List.of(serviceRuleSetTuple));
     }
 }

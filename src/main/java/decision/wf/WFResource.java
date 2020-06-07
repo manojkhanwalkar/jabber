@@ -29,6 +29,8 @@ public class WFResource {
     public WFResource(String template, String defaultName) {
         this.template = template;
         this.defaultName = defaultName;
+
+        wfManager.init();
      /*   clientRequestManager = new ClientRequestManager();
 
         Runtime.getRuntime().addShutdownHook(new Thread()
