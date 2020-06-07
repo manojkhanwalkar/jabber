@@ -48,7 +48,7 @@ public class WFResource {
     public DecisionResponse submit(DecisionRequest request) {
 
 
-        return null;
+        return new DecisionResponse();
 //        return clientRequestManager.submit(request);
 
 

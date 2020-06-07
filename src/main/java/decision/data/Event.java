@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class Event {
 
-    Map<String,String> attributes = new HashMap<>();
+    HashMap<String,String> attributes = new HashMap<>();
 
-    public Map<String, String> getAttributes() {
+    public HashMap<String, String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Map<String, String> attributes) {
+    public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
 

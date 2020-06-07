@@ -3,11 +3,13 @@ package decision.client;
 import data.*;
 import decision.data.DecisionRequest;
 import decision.data.DecisionResponse;
+import decision.data.Event;
 import util.Connection;
 import util.JSONUtil;
 import util.JarUtils;
 
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -27,7 +29,12 @@ public class EventSubmitter {
 
     public void test()
     {
+        DecisionRequest request = new DecisionRequest();
+        request.setRequestId(UUID.randomUUID().toString());
+        request.setWorkflowId("WF1");
+        request.setEvent(new Event());
 
+        submitJob(request);
 
     }
 
