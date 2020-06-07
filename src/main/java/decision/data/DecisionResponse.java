@@ -7,7 +7,7 @@ public class DecisionResponse {
 
     String requestId;
     String responseId;
-    List<ServiceResponse> rawResponses = new ArrayList<>();
+    ArrayList<ServiceResponse> rawResponses = new ArrayList<>();
 
     String finalDecision;
 
@@ -38,11 +38,15 @@ public class DecisionResponse {
         this.responseId = responseId;
     }
 
-    public List<ServiceResponse> getRawResponses() {
+    public ArrayList<ServiceResponse> getRawResponses() {
         return rawResponses;
     }
 
-    public void setRawResponses(List<ServiceResponse> rawResponses) {
+    public void setRawResponses(ArrayList<ServiceResponse> rawResponses) {
         this.rawResponses = rawResponses;
+    }
+
+    public void addRawResponse(ServiceResponse serviceResponse) {
+        rawResponses.add(serviceResponse);
     }
 }

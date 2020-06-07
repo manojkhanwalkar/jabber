@@ -30,7 +30,7 @@ public class S1 implements Service {
         serviceResponse.setRawResponse("This is the raw response from service S1");
         serviceResponse.setResponseId(UUID.randomUUID().toString());
 
-        Map<String,String> serviceDecision = new HashMap<>();
+        HashMap<String,String> serviceDecision = new HashMap<>();
         serviceDecision.put("score",String.valueOf(random.nextInt(101)));
 
 

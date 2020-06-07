@@ -6,7 +6,7 @@ import java.util.Map;
 public class ServiceResponse {
 
     String serviceName;
-    Map<String,String> serviceDecision = new HashMap<>();
+    HashMap<String,String> serviceDecision = new HashMap<>();
     String rawResponse;
     String responseId;
 
@@ -22,11 +22,11 @@ public class ServiceResponse {
         this.serviceName = serviceName;
     }
 
-    public Map<String, String> getServiceDecision() {
+    public HashMap<String, String> getServiceDecision() {
         return serviceDecision;
     }
 
-    public void setServiceDecision(Map<String, String> serviceDecision) {
+    public void setServiceDecision(HashMap<String, String> serviceDecision) {
         this.serviceDecision = serviceDecision;
     }
 

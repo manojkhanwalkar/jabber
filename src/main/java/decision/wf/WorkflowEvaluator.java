@@ -27,15 +27,18 @@ public class WorkflowEvaluator {
 
             ServiceResponse serviceResponse=service.evaluate(request.getEvent());
 
+            decisionResponse.addRawResponse(serviceResponse);
+
             if (RulesEvaluator.evaluate(ruleSet,serviceResponse)) {
 
-                // todo - add decisions
+                decisionResponse.setFinalDecision("Approved");
                 return decisionResponse;
             }
 
 
         }
 
+        decisionResponse.setFinalDecision("Rejected");
         return decisionResponse;
 
 
