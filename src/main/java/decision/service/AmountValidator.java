@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
-public class S1 implements Service {
+public class AmountValidator implements Service {
 
-    public static final String serviceName="S1";
+    public static final String serviceName="AmountValidator";
+
 
     public String getName()
     {
@@ -17,24 +18,20 @@ public class S1 implements Service {
     }
 
 
-    /*
-      String serviceName;
-    String serviceDecision;
-    String rawResponse;
-    String responseId;
-     */
     @Override
     public ServiceResponse evaluate(Event event) {
 
-        Random random = new Random();
+
+
+        HashMap<String,String> serviceDecision = new HashMap<>();
+        serviceDecision.put("age",event.get("age"));
+        serviceDecision.put("amount",event.get("amount"));
 
         ServiceResponse serviceResponse=new ServiceResponse();
         serviceResponse.setServiceName(serviceName);
-        serviceResponse.setRawResponse("This is the raw response from service S1");
+        serviceResponse.setRawResponse("This is the raw response from service AmountValidator");
         serviceResponse.setResponseId(UUID.randomUUID().toString());
 
-        HashMap<String,String> serviceDecision = new HashMap<>();
-        serviceDecision.put("score",String.valueOf(random.nextInt(101)));
 
 
         serviceResponse.setServiceDecisionElements(serviceDecision);

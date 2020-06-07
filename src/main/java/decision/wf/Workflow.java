@@ -14,7 +14,28 @@ public class Workflow {
         this.name = name;
     }
 
-    List<ServiceRuleSetTuple> serviceRuleSetTuples = new ArrayList<>();
+    public Workflow()
+    {
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<ServiceRuleSetTuple> getServiceRuleSetTuples() {
+        return serviceRuleSetTuples;
+    }
+
+    public void setServiceRuleSetTuples(ArrayList<ServiceRuleSetTuple> serviceRuleSetTuples) {
+        this.serviceRuleSetTuples = serviceRuleSetTuples;
+    }
+
+    ArrayList<ServiceRuleSetTuple> serviceRuleSetTuples = new ArrayList<>();
 
     public void add(String serviceName , RuleSet ruleSet , String trueNext, String falseNext)
     {

@@ -14,6 +14,11 @@ public class ServiceRuleSetTuple {
     String falseNext;
 
 
+    public ServiceRuleSetTuple() {}
+
+
+
+
     public ServiceRuleSetTuple(String serviceName, RuleSet ruleSet, String trueNext, String falseNext) {
         this.serviceName = serviceName;
         this.ruleSet = ruleSet;

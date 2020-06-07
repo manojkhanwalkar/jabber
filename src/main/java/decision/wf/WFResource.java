@@ -23,14 +23,14 @@ public class WFResource {
 
    // ClientRequestManager clientRequestManager ;
 
-    WorkflowManager wfManager = new WorkflowManager();
+    WorkflowManager wfManager;
 
 
     public WFResource(String template, String defaultName) {
         this.template = template;
         this.defaultName = defaultName;
 
-        wfManager.init();
+        wfManager = WorkflowManager.init();
      /*   clientRequestManager = new ClientRequestManager();
 
         Runtime.getRuntime().addShutdownHook(new Thread()

@@ -37,6 +37,7 @@ public class EventSubmitter {
 
         event.put("age", "50");
         event.put("country","US");
+        event.put("amount", "5000");
         request.setEvent(event);
 
         submitJob(request);
