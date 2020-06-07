@@ -47,6 +47,9 @@ public class EventSubmitter {
 
         String respStr =  app.sendSimple(JSONUtil.toJSON(request),"submit");
 
+        System.out.println(respStr);
+
+
         if (respStr!=null) {
 
             DecisionResponse response = (DecisionResponse) JSONUtil.fromJSON(respStr, DecisionResponse.class);

@@ -23,6 +23,8 @@ public class WFResource {
 
    // ClientRequestManager clientRequestManager ;
 
+    WorkflowManager wfManager = new WorkflowManager();
+
 
     public WFResource(String template, String defaultName) {
         this.template = template;
@@ -48,8 +50,8 @@ public class WFResource {
     public DecisionResponse submit(DecisionRequest request) {
 
 
-        return new DecisionResponse();
-//        return clientRequestManager.submit(request);
+      //  return new DecisionResponse();
+       return wfManager.submit(request);
 
 
     }
