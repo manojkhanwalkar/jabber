@@ -1,9 +1,12 @@
 package decision.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ServiceResponse {
 
     String serviceName;
-    String serviceDecision;
+    Map<String,String> serviceDecision = new HashMap<>();
     String rawResponse;
     String responseId;
 
@@ -19,11 +22,11 @@ public class ServiceResponse {
         this.serviceName = serviceName;
     }
 
-    public String getServiceDecision() {
+    public Map<String, String> getServiceDecision() {
         return serviceDecision;
     }
 
-    public void setServiceDecision(String serviceDecision) {
+    public void setServiceDecision(Map<String, String> serviceDecision) {
         this.serviceDecision = serviceDecision;
     }
 
@@ -41,6 +44,16 @@ public class ServiceResponse {
 
     public void setResponseId(String responseId) {
         this.responseId = responseId;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceResponse{" +
+                "serviceName='" + serviceName + '\'' +
+                ", serviceDecision=" + serviceDecision +
+                ", rawResponse='" + rawResponse + '\'' +
+                ", responseId='" + responseId + '\'' +
+                '}';
     }
 }
 
