@@ -25,6 +25,8 @@ public class WorkflowEvaluator {
             Service service = workflow.get(i).getService();
             RuleSet ruleSet = workflow.get(i).getRuleSet();
 
+            System.out.println("Calling service " + service.getName());
+
             ServiceResponse serviceResponse=service.evaluate(request.getEvent());
 
             decisionResponse.addRawResponse(serviceResponse);

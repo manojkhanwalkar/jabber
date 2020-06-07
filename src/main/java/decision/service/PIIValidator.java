@@ -7,15 +7,15 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
-public class S1 implements Service {
+public class PIIValidator implements Service {
 
-    public static final String serviceName="S1";
+    public static final String serviceName="PIIValidator";
+
 
     public String getName()
     {
         return serviceName;
     }
-
 
     /*
       String serviceName;
@@ -28,13 +28,15 @@ public class S1 implements Service {
 
         Random random = new Random();
 
+        HashMap<String,String> serviceDecision = new HashMap<>();
+        serviceDecision.put("age",event.get("age"));
+        serviceDecision.put("country",event.get("country"));
+
         ServiceResponse serviceResponse=new ServiceResponse();
         serviceResponse.setServiceName(serviceName);
-        serviceResponse.setRawResponse("This is the raw response from service S1");
+        serviceResponse.setRawResponse("This is the raw response from service PIIValidator");
         serviceResponse.setResponseId(UUID.randomUUID().toString());
 
-        HashMap<String,String> serviceDecision = new HashMap<>();
-        serviceDecision.put("score",String.valueOf(random.nextInt(101)));
 
 
         serviceResponse.setServiceDecisionElements(serviceDecision);

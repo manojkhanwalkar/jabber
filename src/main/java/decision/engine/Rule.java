@@ -51,4 +51,14 @@ public class Rule
     public void setOperand(String operand) {
         this.operand = operand;
     }
+
+    @Override
+    public String toString() {
+        return "Rule{" +
+                "field='" + field + '\'' +
+                ", operator=" + operator +
+                ", operand='" + operand + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

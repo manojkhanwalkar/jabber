@@ -36,7 +36,7 @@ public class RuleSet
     }
 
 
-    public static RuleSet testSet(String name)
+    public static RuleSet testSet1(String name)
     {
         RuleSet ruleSet = new RuleSet(name);
 
@@ -44,11 +44,26 @@ public class RuleSet
         ruleSet.rules.add(new ArrayList<>());
 
         ruleSet.rules.get(0).add(new Rule("score" , Rule.Operator.gt , "100", Rule.OperandType.integer));
-        ruleSet.rules.get(0).add(new Rule("score1" , Rule.Operator.eq , "10", Rule.OperandType.integer));
         ruleSet.rules.get(1).add(new Rule("approved" , Rule.Operator.eq , "yes", Rule.OperandType.string));
 
         return ruleSet;
     }
+
+    public static RuleSet testSet2(String name)
+    {
+        RuleSet ruleSet = new RuleSet(name);
+
+        ruleSet.rules.add(new ArrayList<>());
+        ruleSet.rules.add(new ArrayList<>());
+
+        ruleSet.rules.get(0).add(new Rule("age" , Rule.Operator.gt , "18", Rule.OperandType.integer));
+        ruleSet.rules.get(0).add(new Rule("country" , Rule.Operator.eq , "US", Rule.OperandType.integer));
+
+        return ruleSet;
+    }
+
+
+
 
 
 }

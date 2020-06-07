@@ -32,7 +32,12 @@ public class EventSubmitter {
         DecisionRequest request = new DecisionRequest();
         request.setRequestId(UUID.randomUUID().toString());
         request.setWorkflowId("WF1");
-        request.setEvent(new Event());
+
+        Event event = new Event();
+
+        event.put("age", "50");
+        event.put("country","US");
+        request.setEvent(event);
 
         submitJob(request);
 

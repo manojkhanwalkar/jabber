@@ -3,6 +3,7 @@ package decision.wf;
 import decision.data.DecisionRequest;
 import decision.data.DecisionResponse;
 import decision.engine.RuleSet;
+import decision.service.PIIValidator;
 import decision.service.S1;
 
 import java.util.HashMap;
@@ -38,11 +39,13 @@ public class WorkflowManager {
     public void init()
     {
 
-        RuleSet ruleSet = RuleSet.testSet("Rule1");
+        RuleSet ruleSet = RuleSet.testSet1("Rule1");
 
+        RuleSet ruleSet2 = RuleSet.testSet2("Rule2");
 
         ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(new S1(),ruleSet);
+        ServiceRuleSetTuple serviceRuleSetTuple2 = new ServiceRuleSetTuple(new PIIValidator(),ruleSet2);
 
-        addWorkFlow("WF1",List.of(serviceRuleSetTuple));
+        addWorkFlow("WF1",List.of(serviceRuleSetTuple,serviceRuleSetTuple2));
     }
 }

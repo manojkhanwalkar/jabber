@@ -7,4 +7,6 @@ public interface Service {
 
     public ServiceResponse evaluate(Event event);
 
+    public String getName();
+
 }

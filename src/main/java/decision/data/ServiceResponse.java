@@ -1,14 +1,22 @@
 package decision.data;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class ServiceResponse {
 
     String serviceName;
-    HashMap<String,String> serviceDecision = new HashMap<>();
+    HashMap<String,String> serviceDecisionElements = new HashMap<>();
     String rawResponse;
     String responseId;
+    String serviceDecision;
+
+    public String getServiceDecision() {
+        return serviceDecision;
+    }
+
+    public void setServiceDecision(String serviceDecision) {
+        this.serviceDecision = serviceDecision;
+    }
 
     public ServiceResponse() {
     }
@@ -22,12 +30,12 @@ public class ServiceResponse {
         this.serviceName = serviceName;
     }
 
-    public HashMap<String, String> getServiceDecision() {
-        return serviceDecision;
+    public HashMap<String, String> getServiceDecisionElements() {
+        return serviceDecisionElements;
     }
 
-    public void setServiceDecision(HashMap<String, String> serviceDecision) {
-        this.serviceDecision = serviceDecision;
+    public void setServiceDecisionElements(HashMap<String, String> serviceDecisionElements) {
+        this.serviceDecisionElements = serviceDecisionElements;
     }
 
     public String getRawResponse() {
@@ -50,9 +58,10 @@ public class ServiceResponse {
     public String toString() {
         return "ServiceResponse{" +
                 "serviceName='" + serviceName + '\'' +
-                ", serviceDecision=" + serviceDecision +
+                ", serviceDecisionElements=" + serviceDecisionElements +
                 ", rawResponse='" + rawResponse + '\'' +
                 ", responseId='" + responseId + '\'' +
+                ", serviceDecision='" + serviceDecision + '\'' +
                 '}';
     }
 }
