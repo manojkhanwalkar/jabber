@@ -30,5 +30,10 @@ public class ServiceLocator {
         return service;
     }
 
+    public void put(String serviceName, Service service)
+    {
+        services.put(serviceName,service);
+    }
+
 
 }

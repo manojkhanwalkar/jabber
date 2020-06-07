@@ -6,24 +6,31 @@ import decision.data.ServiceResponse;
 import decision.engine.RuleSet;
 import decision.engine.RulesEvaluator;
 import decision.service.Service;
+import decision.service.ServiceLocator;
 
 import java.util.List;
 import java.util.UUID;
 
+import static decision.wf.ServiceRuleSetTuple.lastStep;
+
 public class WorkflowEvaluator {
 
-    static DecisionResponse process(List<ServiceRuleSetTuple> workflow, DecisionRequest request)
+    static DecisionResponse process(Workflow wf, DecisionRequest request)
     {
+        List<ServiceRuleSetTuple> workflow = wf.serviceRuleSetTuples;
 
         DecisionResponse decisionResponse = new DecisionResponse();
 
         decisionResponse.setRequestId(request.getRequestId());
         decisionResponse.setResponseId(UUID.randomUUID().toString());
 
-        for (int i=0;i<workflow.size();i++)
+        int curr=0;
+        while(true)
         {
-            Service service = workflow.get(i).getService();
-            RuleSet ruleSet = workflow.get(i).getRuleSet();
+            String serviceName = workflow.get(curr).getServiceName();
+
+            Service service = ServiceLocator.getInstance().get(serviceName).get();
+            RuleSet ruleSet = workflow.get(curr).getRuleSet();
 
             System.out.println("Calling service " + service.getName());
 
@@ -31,20 +38,47 @@ public class WorkflowEvaluator {
 
             decisionResponse.addRawResponse(serviceResponse);
 
+            String next;
+
             if (RulesEvaluator.evaluate(ruleSet,serviceResponse)) {
 
-                decisionResponse.setFinalDecision("Approved");
-                return decisionResponse;
+               next = workflow.get(curr).getTrueNext();
+
+            }
+            else
+            {
+                next = workflow.get(curr).getFalseNext();
+
+            }
+
+            if (next.equalsIgnoreCase(lastStep))
+            {
+                break;
+            }
+            else
+            {
+                curr = getLocation(next,workflow);
             }
 
 
         }
 
-        decisionResponse.setFinalDecision("Rejected");
+        wf.OnTerminate(decisionResponse);
         return decisionResponse;
 
 
 
 
+    }
+
+    private static int getLocation(String name,List<ServiceRuleSetTuple> workflow )
+    {
+        for (int i=0;i<workflow.size();i++)
+        {
+            if (workflow.get(i).serviceName.equalsIgnoreCase(name))
+                return i;
+        }
+
+        return -1;
     }
 }

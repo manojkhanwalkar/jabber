@@ -5,9 +5,6 @@ import java.util.List;
 
 public class DecisionResponse {
 
-    String requestId;
-    String responseId;
-    ArrayList<ServiceResponse> rawResponses = new ArrayList<>();
 
     String finalDecision;
 
@@ -49,4 +46,11 @@ public class DecisionResponse {
     public void addRawResponse(ServiceResponse serviceResponse) {
         rawResponses.add(serviceResponse);
     }
+
+    String requestId;
+    String responseId;
+    ArrayList<ServiceResponse> rawResponses = new ArrayList<>();
+
+
+
 }
