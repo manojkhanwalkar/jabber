@@ -1,64 +1,44 @@
 package decision.engine;
 
-import java.awt.desktop.OpenFilesEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class Rule
-{
+public class Rule {
 
-    public enum OperandType { integer, string}
+    List<Condition> conditions= new ArrayList<>();
 
-    public enum Operator { eq, lt, gt , lte, gte, neq}
-
-    String field;
-    Operator operator ;
-    String operand ;
-
-    OperandType type ;
-
-
-    public Rule(String field, Operator operator, String operand, OperandType type) {
-        this.field = field;
-        this.operator = operator;
-        this.operand = operand;
-        this.type = type;
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    public Rule()
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
+    public void add(Condition condition)
+    {
+        conditions.add(condition);
+    }
+
+    public boolean evaluate()
     {
 
+        System.out.println("Evaluating " + conditions);
+        Random random = new Random();
+        int toss = random.nextInt(2);
+        return  (toss==0);
+
     }
 
-    public String getField() {
-        return field;
-    }
 
-    public void setField(String field) {
-        this.field = field;
-    }
+    /*
 
-    public Operator getOperator() {
-        return operator;
-    }
+     private static boolean evaluate (Condition rule , ServiceResponse serviceResponse)
+    {
 
-    public void setOperator(Operator operator) {
-        this.operator = operator;
-    }
 
-    public String getOperand() {
-        return operand;
     }
-
-    public void setOperand(String operand) {
-        this.operand = operand;
-    }
-
-    @Override
-    public String toString() {
-        return "Rule{" +
-                "field='" + field + '\'' +
-                ", operator=" + operator +
-                ", operand='" + operand + '\'' +
-                ", type=" + type +
-                '}';
-    }
+     */
+    //TODO - action might need to be associated at this level.
 }

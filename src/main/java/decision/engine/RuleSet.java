@@ -15,13 +15,13 @@ public class RuleSet
         this.name = name;
     }
 
-    List<List<Rule>> rules= new ArrayList();
+    List<Rule> rules= new ArrayList();
 
-    public List<List<Rule>> getRules() {
+    public List<Rule> getRules() {
         return rules;
     }
 
-    public void setRules(List<List<Rule>> rules) {
+    public void setRules(List<Rule> rules) {
         this.rules = rules;
     }
 
@@ -40,11 +40,15 @@ public class RuleSet
     {
         RuleSet ruleSet = new RuleSet(name);
 
-        ruleSet.rules.add(new ArrayList<>());
-        ruleSet.rules.add(new ArrayList<>());
+        Rule rule1 = new Rule();
+        rule1.add(new Condition("score" , Condition.Operator.gt , "100", Condition.OperandType.integer));
 
-        ruleSet.rules.get(0).add(new Rule("score" , Rule.Operator.gt , "100", Rule.OperandType.integer));
-        ruleSet.rules.get(1).add(new Rule("approved" , Rule.Operator.eq , "yes", Rule.OperandType.string));
+        Rule rule2 = new Rule();
+        rule2.add(new Condition("approved" , Condition.Operator.eq , "yes", Condition.OperandType.string));
+
+        ruleSet.rules.add(rule1);
+        ruleSet.rules.add(rule2);
+
 
         return ruleSet;
     }
@@ -53,11 +57,9 @@ public class RuleSet
     {
         RuleSet ruleSet = new RuleSet(name);
 
-        ruleSet.rules.add(new ArrayList<>());
-        ruleSet.rules.add(new ArrayList<>());
-
-        ruleSet.rules.get(0).add(new Rule("age" , Rule.Operator.gt , "18", Rule.OperandType.integer));
-        ruleSet.rules.get(0).add(new Rule("country" , Rule.Operator.eq , "US", Rule.OperandType.integer));
+        Rule rule1 = new Rule();
+        rule1.add(new Condition("age" , Condition.Operator.gt , "18", Condition.OperandType.integer));
+        rule1.add(new Condition("country" , Condition.Operator.eq , "US", Condition.OperandType.integer));
 
         return ruleSet;
     }

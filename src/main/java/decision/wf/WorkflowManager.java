@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static decision.wf.ServiceRuleSetTuple.lastStep;
+import static decision.wf.ServiceRuleSetTuple.nextRule;
 
 public class WorkflowManager {
 
@@ -56,18 +57,23 @@ public class WorkflowManager {
         ServiceLocator.getInstance().put("MiscLoanGiver", new MiscLoanGiver());
 
 
-        RuleSet ruleSet = RuleSet.testSet1("Rule1");
+        {
+            RuleSet ruleSet = RuleSet.testSet1("Rule1");
 
-        RuleSet ruleSet2 = RuleSet.testSet2("Rule2");
+            RuleSet ruleSet2 = RuleSet.testSet2("Rule2");
 
-        ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple("ScoreCreator",ruleSet,"PIIValidator","PIIValidator");
-        ServiceRuleSetTuple serviceRuleSetTuple2 = new ServiceRuleSetTuple("PIIValidator",ruleSet2, lastStep, lastStep);
+            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple("ScoreCreator", ruleSet, "PIIValidator", nextRule);
+            ServiceRuleSetTuple serviceRuleSetTuple2 = new ServiceRuleSetTuple("PIIValidator", ruleSet2, lastStep, lastStep);
 
-        Workflow workflow = new Workflow("WF1");
-        workflow.add(serviceRuleSetTuple);
-        workflow.add(serviceRuleSetTuple2);
+            Workflow workflow = new Workflow("WF1");
+            workflow.add(serviceRuleSetTuple);
+            workflow.add(serviceRuleSetTuple2);
 
-        workflowManager.addWorkFlow("WF1",workflow);
+            workflowManager.addWorkFlow("WF1", workflow);
+
+        }
+
+
 
         String str = JSONUtil.toJSON(workflowManager);
 
@@ -75,7 +81,7 @@ public class WorkflowManager {
 
         return workflowManager;
 
-
+//TODO - read wf rules from config file .
 
 
 

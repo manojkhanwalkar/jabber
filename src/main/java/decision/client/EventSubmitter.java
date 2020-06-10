@@ -25,6 +25,59 @@ public class EventSubmitter {
     }
 
 
+    public void test1()
+    {
+        DecisionRequest request = new DecisionRequest();
+        request.setRequestId(UUID.randomUUID().toString());
+        request.setWorkflowId("WF2");
+
+        Event event = new Event();
+
+        event.put("age", "50");
+        event.put("country","US");
+        event.put("amount", "5000");
+        request.setEvent(event);
+
+        submitJob(request);
+
+    }
+
+    public void test2()
+    {
+        DecisionRequest request = new DecisionRequest();
+        request.setRequestId(UUID.randomUUID().toString());
+        request.setWorkflowId("WF2");
+
+        Event event = new Event();
+
+        event.put("age", "50");
+        event.put("country","US");
+        event.put("amount", "15000");
+        request.setEvent(event);
+
+        submitJob(request);
+
+    }
+
+    public void test3()
+    {
+        DecisionRequest request = new DecisionRequest();
+        request.setRequestId(UUID.randomUUID().toString());
+        request.setWorkflowId("WF2");
+
+        Event event = new Event();
+
+        event.put("age", "5");
+        event.put("country","US");
+        event.put("amount", "15000");
+        request.setEvent(event);
+
+        submitJob(request);
+
+    }
+
+
+
 
 
     public void test()

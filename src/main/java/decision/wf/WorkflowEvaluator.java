@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static decision.wf.ServiceRuleSetTuple.lastStep;
+import static decision.wf.ServiceRuleSetTuple.nextRule;
 
 public class WorkflowEvaluator {
 
@@ -25,7 +26,7 @@ public class WorkflowEvaluator {
         decisionResponse.setResponseId(UUID.randomUUID().toString());
 
         int curr=0;
-        while(true)
+        while(curr<workflow.size())
         {
             String serviceName = workflow.get(curr).getServiceName();
 
@@ -39,6 +40,10 @@ public class WorkflowEvaluator {
             decisionResponse.addRawResponse(serviceResponse);
 
             String next;
+            if (ruleSet==null)
+            {
+                curr = curr+1;
+            }
 
             if (RulesEvaluator.evaluate(ruleSet,serviceResponse)) {
 
@@ -54,6 +59,12 @@ public class WorkflowEvaluator {
             if (next.equalsIgnoreCase(lastStep))
             {
                 break;
+            }
+
+            if (next.equalsIgnoreCase(nextRule))
+            {
+                curr=curr+1;  // next rule
+
             }
             else
             {

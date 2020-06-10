@@ -1,8 +1,6 @@
 package decision.engine;
 
-import decision.data.Event;
 import decision.data.ServiceResponse;
-import decision.engine.RuleSet;
 
 import java.util.List;
 import java.util.Random;
@@ -15,18 +13,11 @@ public class RulesEvaluator {
         boolean result = false;
         for (int i=0;i<ruleSet.rules.size();i++)
         {
-            List<Rule> list = ruleSet.rules.get(i);
+            Rule rule = ruleSet.rules.get(i);
 
-            for (int j=0;j<list.size();j++)
-            {
-                Rule rule = list.get(j);
-                result = evaluate(rule,serviceResponse);
+            result = rule.evaluate();
+            System.out.println(rule + " evaluated to " + result);
 
-                System.out.println(rule + " evaluated to " + result);
-                if (!result)
-                    break;
-
-            }
             if (result) {
                 serviceResponse.setServiceDecision("Approved");
                 return result;
@@ -39,12 +30,5 @@ public class RulesEvaluator {
     }
 
 
-    private static boolean evaluate (Rule rule , ServiceResponse serviceResponse)
-    {
 
-        Random random = new Random();
-        int toss = random.nextInt(2);
-        return  (toss==0);
-
-    }
 }

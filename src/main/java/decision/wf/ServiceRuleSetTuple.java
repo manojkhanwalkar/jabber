@@ -6,6 +6,7 @@ import decision.service.Service;
 public class ServiceRuleSetTuple {
 
     public static String lastStep = "terminate";
+    public static String nextRule = "nextRule";
 
     String serviceName;
     RuleSet ruleSet;
