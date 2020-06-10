@@ -1,5 +1,7 @@
 package decision.engine;
 
+import decision.data.ServiceResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,15 +23,21 @@ public class Rule {
         conditions.add(condition);
     }
 
-    public boolean evaluate()
+    public boolean evaluate(ServiceResponse serviceResponse)
     {
 
-        System.out.println("Evaluating " + conditions);
-        Random random = new Random();
-        int toss = random.nextInt(2);
-        return  (toss==0);
+       for (Condition condition :conditions)
+       {
+           boolean result = condition.evaluate(serviceResponse);
+           if (!result)
+               return false;
+       }
+
+       return true;
 
     }
+
+
 
 
     /*

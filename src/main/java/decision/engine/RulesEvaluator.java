@@ -15,7 +15,7 @@ public class RulesEvaluator {
         {
             Rule rule = ruleSet.rules.get(i);
 
-            result = rule.evaluate();
+            result = rule.evaluate(serviceResponse);
             System.out.println(rule + " evaluated to " + result);
 
             if (result) {

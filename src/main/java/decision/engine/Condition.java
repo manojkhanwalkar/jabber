@@ -1,5 +1,7 @@
 package decision.engine;
 
+import decision.data.ServiceResponse;
+
 import java.awt.desktop.OpenFilesEvent;
 
 public class Condition
@@ -61,4 +63,71 @@ public class Condition
                 ", type=" + type +
                 '}';
     }
+
+
+
+     boolean evaluate( ServiceResponse serviceResponse)
+    {
+        String lhs = serviceResponse.getServiceDecisionElements().get(field);
+
+        if (lhs==null) return false;
+
+        switch (type)
+        {
+            case integer:
+                return evaluateInteger(lhs);
+
+            case string:
+                return evaluateStr(lhs);
+
+            default:
+                System.out.println("Not implemented ");
+                return false;
+        }
+
+
+
+    }
+
+    boolean evaluateInteger(String s)
+    {
+        Integer lhs = Integer.valueOf(s);
+        Integer rhs = Integer.valueOf(operand);
+
+        return evaluateObject(lhs.equals(rhs), lhs.compareTo(rhs));
+    }
+
+    private boolean evaluateObject(boolean equals, int i) {
+        switch(operator)
+        {
+            case eq:
+                if(equals)
+                    return true;
+            case gt:
+                if (i >0)
+                    return true;
+            case lt:
+                if (i <0)
+                    return true;
+            case gte:
+                if(i >=0)
+                    return true;
+            case lte:
+                if(i <=0)
+                    return true;
+            case neq:
+                if(!equals)
+                    return true;
+
+            default : System.out.println("Not implemented"); return false;
+        }
+    }
+
+
+    boolean evaluateStr(String lhs)
+    {
+        return evaluateObject(lhs.equals(operand), lhs.compareTo(operand));
+    }
+
+
 }
