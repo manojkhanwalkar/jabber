@@ -4,6 +4,8 @@ import decision.data.DecisionRequest;
 import decision.data.DecisionResponse;
 import decision.engine.RuleSet;
 import decision.service.*;
+import logger.LogManager;
+import logger.Logger;
 import util.JSONUtil;
 
 import java.util.HashMap;
@@ -77,7 +79,9 @@ public class WorkflowManager {
 
         String str = JSONUtil.toJSON(workflowManager);
 
-        System.out.println(str);
+        LogManager.getInstance().log(str, Logger.LogLevels.INFO);
+
+        //System.out.println(str);
 
         return workflowManager;
 
