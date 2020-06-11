@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -46,7 +47,7 @@ public class LogManager {
                 mode = loggerProperties.getMode();
                 if (mode== LoggerProperties.Mode.async)
                 {
-                    asycLogManager = new AsycLogManager(logger);
+                    asycLogManager = new AsycLogManager(logger, AsycLogManager.Policy.DiscardOld);
                 }
 
             }
@@ -99,15 +100,21 @@ public class LogManager {
     static class AsycLogManager
     {
 
+
+        public enum Policy { DiscardOld , DiscardNew , RunSync}
+        final int maxBuffer = 5;
         Logger logger;
 
-        LinkedBlockingQueue<LogRecord> queue = new LinkedBlockingQueue<>();
+        ArrayBlockingQueue<LogRecord> queue = new ArrayBlockingQueue<>(maxBuffer);
+
+        Policy policy;
 
         ExecutorService service = Executors.newFixedThreadPool(1);
 
-        public AsycLogManager(Logger logger)
+        public AsycLogManager(Logger logger, Policy policy)
         {
             this.logger = logger;
+            this.policy = policy;
 
             service.submit(()->{
 
@@ -116,6 +123,12 @@ public class LogManager {
                 {
                     LogRecord logRecord = queue.take();
                     logger.log(logRecord);
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -123,11 +136,25 @@ public class LogManager {
         public void logAsync(LogRecord logRecord)
         {
 
-            try {
-                queue.put(logRecord);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+                if (queue.offer(logRecord))
+                {
+                    return;
+                }
+
+                switch(policy)
+                {
+                    case DiscardNew:
+                        return;
+                    case RunSync:
+                        logger.log(logRecord);
+                        return;
+                    case DiscardOld:
+                        while(!queue.offer(logRecord))
+                            queue.poll();
+
+                        return;
+                }
         }
 
     }
