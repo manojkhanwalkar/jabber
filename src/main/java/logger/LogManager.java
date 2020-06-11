@@ -108,23 +108,26 @@ public class LogManager {
         public AsycLogManager(Logger logger)
         {
             this.logger = logger;
+
+            service.submit(()->{
+
+                while(true)
+
+                {
+                    LogRecord logRecord = queue.take();
+                    logger.log(logRecord);
+                }
+            });
         }
 
         public void logAsync(LogRecord logRecord)
         {
 
-            service.submit(()->{
-
-/*                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
-
-                logger.log(logRecord);
-
-
-            });
+            try {
+                queue.put(logRecord);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }
