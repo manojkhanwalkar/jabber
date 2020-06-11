@@ -16,49 +16,71 @@ public class FileLogger implements Logger {
     int size;
 
     BufferedWriter writer;
-    public FileLogger(String dir, String fileName, int size) {
-        this.dir = dir;
-        this.fileName = fileName;
-        this.size = size;
 
+    public void init(LoggerProperties loggerProperties)
+    {
+        this.dir = loggerProperties.getLogDir();
+        this.fileName = loggerProperties.getFileName();
+        this.size = loggerProperties.getFileSize();
+
+        makeFile();
 
     }
 
-    private BufferedWriter makeFile()
+    private void makeFile()
     {
         try {
             LocalDateTime dateTime = LocalDateTime.now();
             File file = new File(dir+fileName+"_"+dateTime.format(formatter));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+             writer = new BufferedWriter(new FileWriter(file));
 
-            return writer;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
     }
+
+    int currSize = 0;
 
     @Override
-    public void log(LogRecord logRecord) {
+    public synchronized void log(LogRecord logRecord) {
 
+        String str = logRecord.toString();
+        if (currSize>size) {
+            rollover();
+            currSize=0;
+        }
+        else
+        {
+            currSize+=str.length();
+
+        }
+
+        try {
+            writer.write(str);
+            writer.newLine();
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:SSS");
 
 
 
-    BufferedWriter rollover(BufferedWriter curr)
+    void rollover()
     {
 
         try {
-            curr.flush();
-            curr.close();
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return makeFile();
+        makeFile();
 
     }
 }

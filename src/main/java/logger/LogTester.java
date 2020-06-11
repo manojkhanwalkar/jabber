@@ -8,13 +8,14 @@ public class LogTester {
 
         LogManager logManager = LogManager.getInstance();
 
-        logManager.init();
+      //  logManager.init();
 
 
-        for (int i=0;i<100;i++) {
+        for (int i=0;i<1000;i++) {
             logManager.log(i, Logger.LogLevels.INFO);
 
-            Thread.sleep(250);
+            Thread.sleep(100);
+
         }
 
     }

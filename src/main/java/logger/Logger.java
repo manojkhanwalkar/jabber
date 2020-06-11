@@ -5,4 +5,6 @@ public interface Logger {
     public void log(LogRecord logRecord);
 
     public enum LogLevels {INFO, DEBUG, WARN}
+
+    default  void init(LoggerProperties loggerProperties) {}
 }

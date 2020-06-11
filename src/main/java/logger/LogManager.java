@@ -44,10 +44,12 @@ public class LogManager {
                 LoggerProperties loggerProperties = (LoggerProperties)JSONUtil.fromJSON(str,LoggerProperties.class);
                 logger = (Logger)Class.forName(loggerProperties.getLogger()).getDeclaredConstructors()[0].newInstance();
 
+                logger.init(loggerProperties);
+
                 mode = loggerProperties.getMode();
                 if (mode== LoggerProperties.Mode.async)
                 {
-                    asycLogManager = new AsycLogManager(logger, AsycLogManager.Policy.DiscardOld);
+                    asycLogManager = new AsycLogManager(logger, AsycLogManager.Policy.DiscardNew);
                 }
 
             }
@@ -69,7 +71,7 @@ public class LogManager {
 
     private LoggerProperties.Mode mode;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss:SSS");
     //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     public void log(Object payload, Logger.LogLevels level)

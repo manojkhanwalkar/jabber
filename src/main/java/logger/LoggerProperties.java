@@ -67,10 +67,10 @@ public class LoggerProperties {
     {
         LoggerProperties loggerProperties = new LoggerProperties();
         loggerProperties.setFileName("log");
-        loggerProperties.setFileSize(10000);
-        loggerProperties.setLogDir("/home/manoj/data/epi/");
+        loggerProperties.setFileSize(1000);
+        loggerProperties.setLogDir("/home/manoj/data/epi/logs/");
         loggerProperties.setMode(Mode.async);
-        loggerProperties.setLogger("logger.SysOutLogger");
+        loggerProperties.setLogger("logger.FileLogger");
 
         String str = JSONUtil.toJSON(loggerProperties);
 
