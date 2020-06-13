@@ -1,8 +1,8 @@
 package client;
 
-import com.amazonaws.services.batch.model.SubmitJobRequest;
+//import com.amazonaws.services.batch.model.SubmitJobRequest;
 import data.*;
-import org.apache.commons.codec.binary.Base64;
+//import org.apache.commons.codec.binary.Base64;
 import util.Connection;
 import util.JSONUtil;
 import util.JarUtils;
