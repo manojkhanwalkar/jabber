@@ -45,8 +45,21 @@ public class Cache<V> {
     }
 
 
+    public static final int HighWaterMark = 10;
+
+    Evictor<V> evictor ;
+
+    int entries = 0;
+
     public void put(V value)
     {
+
+        if (entries>=HighWaterMark)
+        {
+            evictor.getEvictionTargets().stream().forEach(v->remove(v));
+        }
+        entries++;
+
 
         Class<?> clazz = value.getClass();
 
@@ -63,6 +76,8 @@ public class Cache<V> {
                     String keyValue = (String)field.get(value);
 
                     map.put(keyValue,value);
+
+                    evictor.put(value);
                 }
                 else
                 {
@@ -79,6 +94,7 @@ public class Cache<V> {
     public void remove(V value)
     {
 
+        entries--;
         Class<?> clazz = value.getClass();
 
 
@@ -135,11 +151,21 @@ public class Cache<V> {
             return this;
         }
 
+        Evictor evictor ;
 
         EvictionPolicy policy;
         public Builder<T> evictionPolicy(EvictionPolicy policy)
         {
             this.policy=policy;
+            if (policy==EvictionPolicy.LRU)
+            {
+                evictor = new LRUEvictor();
+            }
+            else
+            {
+                evictor = new LFUEvictor();
+            }
+
             return this;
         }
 
@@ -154,6 +180,7 @@ public class Cache<V> {
             });
 
             cache.policy = policy;
+            cache.evictor=evictor;
 
             cache.init();
 
@@ -165,8 +192,11 @@ public class Cache<V> {
     @Override
     public String toString() {
         return "Cache{" +
-                "cacheName='" + cacheName + '\'' +
+                "policy=" + policy +
+                ", cacheName='" + cacheName + '\'' +
                 ", uniqueKeys=" + uniqueKeys +
+                ", evictor=" + evictor +
+                ", entries=" + entries +
                 ", uniqueKeysMap=" + uniqueKeysMap +
                 '}';
     }
