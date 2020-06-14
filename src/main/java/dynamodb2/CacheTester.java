@@ -15,9 +15,13 @@ public class CacheTester {
         Cache<Customer> custCache = builder.properties(cacheProperties).build();
 
 
-        custCache.put(new Customer());
+
+        Customer customer = new Customer();
+        custCache.put(customer);
 
 
+        System.out.println(custCache);
+        custCache.remove(customer);
         System.out.println(custCache);
 
 

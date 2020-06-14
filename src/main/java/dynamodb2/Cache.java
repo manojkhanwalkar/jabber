@@ -10,6 +10,18 @@ import java.util.Map;
 
 public class Cache<V> {
 
+    public enum EvictionPolicy { LRU , LFU};
+
+    EvictionPolicy policy = EvictionPolicy.LRU;
+
+    public EvictionPolicy getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(EvictionPolicy policy) {
+        this.policy = policy;
+    }
+
     String cacheName;
 
 
@@ -63,6 +75,38 @@ public class Cache<V> {
 
     }
 
+
+    public void remove(V value)
+    {
+
+        Class<?> clazz = value.getClass();
+
+
+        uniqueKeys.stream().forEach(key->{
+
+            try {
+                Map<String,V> map = uniqueKeysMap.get(key);
+                if (map!=null)
+                {
+                    Field field = clazz.getDeclaredField(key);
+                    field.setAccessible(true);
+
+                    String keyValue = (String)field.get(value);
+
+                    map.remove(keyValue,value);
+                }
+                else
+                {
+                    System.out.println("Invalid key type specified");
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+
     Map<String,Map<String,V>> uniqueKeysMap = new HashMap<>();
 
 
@@ -91,6 +135,14 @@ public class Cache<V> {
             return this;
         }
 
+
+        EvictionPolicy policy;
+        public Builder<T> evictionPolicy(EvictionPolicy policy)
+        {
+            this.policy=policy;
+            return this;
+        }
+
         public Cache<T> build()
         {
             Cache<T> cache = new Cache<>();
@@ -100,6 +152,8 @@ public class Cache<V> {
 
 
             });
+
+            cache.policy = policy;
 
             cache.init();
 
