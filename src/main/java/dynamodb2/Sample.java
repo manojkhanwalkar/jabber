@@ -10,6 +10,8 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.DeleteTableRequest;
+import software.amazon.awssdk.services.glue.model.Table;
 
 import java.net.URI;
 import java.util.UUID;
@@ -48,14 +50,23 @@ public class Sample {
                 .dynamoDbClient(ddb)
                 .build();
 
+
+
         DynamoDbTable<Customer> customerTable =
                 enhancedClient.table("customers_table", TableSchema.fromBean(Customer.class));
 
-     //   System.out.println(customerTable);
+       DeleteTableRequest deleteTableRequest =  DeleteTableRequest.builder().tableName("customers_table").build();
 
-       // customerTable.createTable();
+        ddb.deleteTable(deleteTableRequest);
 
-      /*  customerTable.getItem(customerToGet);
+
+        Thread.sleep(1000);
+
+            //   System.out.println(customerTable);
+
+        customerTable.createTable();
+
+    /*   customerTable.getItem(customerToGet);
         customerTable.putItem(newCustomer);
         customerTable.deleteItem(customerToDelete);
         customerTable.scan();*/

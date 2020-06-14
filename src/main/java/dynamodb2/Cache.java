@@ -10,6 +10,14 @@ import java.util.Map;
 
 public class Cache<V> {
 
+    String tableName;
+
+    public void clean() {
+
+        DBManager.delete(tableName);
+
+    }
+
     public enum EvictionPolicy { LRU , LFU};
 
     EvictionPolicy policy = EvictionPolicy.LRU;
@@ -29,12 +37,22 @@ public class Cache<V> {
 
     private Cache() {}
 
-    public V get(String keyName, String key)
+    public V get(String keyName, String key, V dummy)
     {
         Map<String,V> map = uniqueKeysMap.get(keyName);
         if (map!=null)
         {
-            return map.get(key);
+            V v =  map.get(key);
+            if (v==null)
+            {
+                System.out.println("Getting from data base ");
+
+                v= dbManager.getItem(dummy);
+
+                recover(v);
+            }
+
+            return  v;
         }
         else
         {
@@ -42,6 +60,12 @@ public class Cache<V> {
             return null;
         }
 
+    }
+
+
+    public void printDBItems()
+    {
+        dbManager.printAllItems();
     }
 
 
@@ -78,6 +102,47 @@ public class Cache<V> {
                     map.put(keyValue,value);
 
                     evictor.put(value);
+
+                    dbManager.putItem(value);
+                }
+                else
+                {
+                    System.out.println("Invalid key type specified");
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+
+    public void recover(V value)
+    {
+
+
+        entries++;
+
+
+        Class<?> clazz = value.getClass();
+
+
+        uniqueKeys.stream().forEach(key->{
+
+            try {
+                Map<String,V> map = uniqueKeysMap.get(key);
+                if (map!=null)
+                {
+                    Field field = clazz.getDeclaredField(key);
+                    field.setAccessible(true);
+
+                    String keyValue = (String)field.get(value);
+
+                    map.put(keyValue,value);
+
+                    evictor.put(value);
+
+
                 }
                 else
                 {
@@ -110,6 +175,43 @@ public class Cache<V> {
                     String keyValue = (String)field.get(value);
 
                     map.remove(keyValue,value);
+
+                    //dbManager.deleteItem(value);
+                }
+                else
+                {
+                    System.out.println("Invalid key type specified");
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+    }
+
+
+    public void delete(V value)
+    {
+
+        entries--;
+        Class<?> clazz = value.getClass();
+
+
+        uniqueKeys.stream().forEach(key->{
+
+            try {
+                Map<String,V> map = uniqueKeysMap.get(key);
+                if (map!=null)
+                {
+                    Field field = clazz.getDeclaredField(key);
+                    field.setAccessible(true);
+
+                    String keyValue = (String)field.get(value);
+
+                    map.remove(keyValue,value);
+
+                    dbManager.deleteItem(value);
                 }
                 else
                 {
@@ -123,8 +225,12 @@ public class Cache<V> {
     }
 
 
+
     Map<String,Map<String,V>> uniqueKeysMap = new HashMap<>();
 
+    DBManager<V> dbManager;
+
+    Class<V> table;
 
     public void init()
     {
@@ -132,6 +238,13 @@ public class Cache<V> {
 
             uniqueKeysMap.put(key,new HashMap<>());
         });
+
+        if (tableName!=null)
+        {
+            DBManager.create(tableName,table);
+            dbManager= new DBManager<>(tableName,table);
+
+        }
     }
 
     public static<T>  Builder<T> builder()
@@ -169,6 +282,15 @@ public class Cache<V> {
             return this;
         }
 
+        String tableName;
+        Class<T> table;
+        public Builder<T> persist(String tableName, Class<T> c)
+        {
+            this.tableName = tableName;
+            this.table = c;
+            return this;
+        }
+
         public Cache<T> build()
         {
             Cache<T> cache = new Cache<>();
@@ -181,6 +303,10 @@ public class Cache<V> {
 
             cache.policy = policy;
             cache.evictor=evictor;
+
+            cache.tableName=tableName;
+            cache.table = table;
+
 
             cache.init();
 
