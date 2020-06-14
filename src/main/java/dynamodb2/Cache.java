@@ -45,7 +45,7 @@ public class Cache<V> {
             V v =  map.get(key);
             if (v==null)
             {
-                System.out.println("Getting from data base ");
+               // System.out.println("Getting from data base ");
 
                 v= dbManager.getItem(dummy);
 

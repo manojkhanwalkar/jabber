@@ -36,7 +36,7 @@ public class CacheTester {
         System.out.println(custCache);
 
 
-        custCache.printDBItems();
+       // custCache.printDBItems();
 
       for (int i=0;i<100;i++) {
 
@@ -48,7 +48,7 @@ public class CacheTester {
             Customer result = custCache.get("id" , customer.getId(),customer);
             // dbManager.putItem(customer);
 
-            System.out.println(result);
+            //System.out.println(result);
 
 
             //  Thread.sleep(100);
