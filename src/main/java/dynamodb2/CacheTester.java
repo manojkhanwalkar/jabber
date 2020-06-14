@@ -1,0 +1,21 @@
+package dynamodb2;
+
+import dynamodb2.data.Customer;
+
+public class CacheTester {
+
+
+    public static void main(String[] args) {
+
+        CacheProperties cacheProperties = new CacheProperties();
+
+        Cache.Builder<Customer> builder = Cache.builder();
+
+        Cache<Customer> custCache = builder.properties(cacheProperties).build();
+
+
+
+
+
+    }
+}

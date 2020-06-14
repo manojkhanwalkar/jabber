@@ -4,6 +4,7 @@ package dynamodb2;
 //import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 //import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 //import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDB;
+import dynamodb2.data.Customer;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -60,7 +61,7 @@ public class Sample {
         customerTable.scan();*/
 
       Customer customer = new Customer();
-      customer.id= UUID.randomUUID().toString();
+      customer.setId( UUID.randomUUID().toString());
 
       customerTable.putItem(customer);
 
