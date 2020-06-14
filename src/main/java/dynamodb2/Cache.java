@@ -94,8 +94,26 @@ public class Cache<V> {
         public Cache<T> build()
         {
             Cache<T> cache = new Cache<>();
+            cache.cacheName=cacheProperties.cacheName;
+            cacheProperties.getUniqueKeys().stream().forEach(key->{
+                cache.uniqueKeys.add(key);
+
+
+            });
+
+            cache.init();
+
             return cache;
         }
     }
 
+
+    @Override
+    public String toString() {
+        return "Cache{" +
+                "cacheName='" + cacheName + '\'' +
+                ", uniqueKeys=" + uniqueKeys +
+                ", uniqueKeysMap=" + uniqueKeysMap +
+                '}';
+    }
 }

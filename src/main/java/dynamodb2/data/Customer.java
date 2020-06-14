@@ -4,14 +4,20 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @DynamoDbBean
 public class Customer {
-    String id ;
+     String id ;
 
     String name;
 
     String address;
+
+    public Customer()
+    {
+        this.id= UUID.randomUUID().toString();
+    }
 
     @DynamoDbPartitionKey
     public String getId() {
