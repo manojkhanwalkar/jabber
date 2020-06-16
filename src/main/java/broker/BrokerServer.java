@@ -11,6 +11,10 @@ public class BrokerServer {
 
         publisherSocketServer.startServer();
 
+        SubscriberSocketServer subscriberSocketServer = new SubscriberSocketServer(6000);
+
+        subscriberSocketServer.startServer();
+
 
 
         while (true)

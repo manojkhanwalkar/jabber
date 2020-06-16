@@ -12,15 +12,15 @@ public class ConsumerProxy {
 
     ConsumerConnection consumerConnection ;
 
-    PubSubManager pubSubManager;
+    PubSubManager pubSubManager = PubSubManager.getInstance();
 
     ExecutorService service = Executors.newFixedThreadPool(1);
 
-    public ConsumerProxy(ConsumerConnection consumerConnection, PubSubManager pubSubManager)
+    public ConsumerProxy(ConsumerConnection consumerConnection)
     {
         this.consumerConnection = consumerConnection;
 
-        this.pubSubManager=pubSubManager;
+
 
         service.submit(new ConsumerSender(sendingQueue,consumerConnection));
     }
@@ -43,7 +43,7 @@ public class ConsumerProxy {
 
     public void processAck(BrokerMessage brokerMessage) {
 
-        //TODO - implement ack processing
+        //TODO - implement ack processing, also the subscriber needs to send an ack after receiving the message.
     }
 
 
@@ -70,6 +70,7 @@ public class ConsumerProxy {
                     msgToFroward.id= UUID.randomUUID().toString();
                     msgToFroward.payload=brokerMessage.payload;
                     msgToFroward.seqNum=++count;
+                    msgToFroward.topic=brokerMessage.getTopic();
 
                     consumerConnection.send(msgToFroward);
 
@@ -77,7 +78,7 @@ public class ConsumerProxy {
                     e.printStackTrace();
                 }
 
-                // create a new broker message from this one and
+
 
             }
 

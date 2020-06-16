@@ -9,11 +9,22 @@ public class Tester {
         Publisher publisher = new Publisher();
 
 
-        publisher.publish("topic1", "Hello World");
-        publisher.publish("topic2", "Another Hello World");
+        Subscriber subscriber = new Subscriber();
+
+        subscriber.subscribe("topic1", (bm)->{ System.out.println(bm); });
+        subscriber.subscribe("topic2", (bm)->{ System.out.println(bm); });
+
+        Thread.sleep(1000);
 
 
+        for (int i=0;i<100;i++) {
 
+            publisher.publish("topic1", "Hello World");
+            publisher.publish("topic2", "Another Hello World");
+
+            Thread.sleep(1000);
+
+        }
 
 
 
