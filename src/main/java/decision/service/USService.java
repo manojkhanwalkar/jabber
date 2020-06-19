@@ -3,6 +3,7 @@ package decision.service;
 import decision.data.Event;
 import decision.data.ServiceResponse;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class USService implements Service {
@@ -25,6 +26,12 @@ public class USService implements Service {
         serviceResponse.setResponseId(UUID.randomUUID().toString());
 
         serviceResponse.setServiceDecision("Approved");
+
+        HashMap<String,String> serviceDecision = new HashMap<>();
+
+        serviceDecision.putAll(event.getAttributes());
+
+        serviceResponse.setServiceDecisionElements(serviceDecision);
         return serviceResponse;
     }
 }

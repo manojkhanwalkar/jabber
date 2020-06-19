@@ -24,54 +24,6 @@ public class WorkflowEvaluator {
         decisionResponse.setRequestId(request.getRequestId());
         decisionResponse.setResponseId(UUID.randomUUID().toString());
 
-    /*    int curr=0;
-        while(curr<workflow.size())
-        {
-            String serviceName = workflow.get(curr).getServiceName();
-
-            Service service = ServiceLocator.getInstance().get(serviceName).get();
-            RuleSet ruleSet = workflow.get(curr).getRuleSet();
-
-            System.out.println("Calling service " + service.getName());
-
-            ServiceResponse serviceResponse=service.evaluate(request.getEvent());
-
-            decisionResponse.addRawResponse(serviceResponse);
-
-            String next;
-            if (ruleSet==null)
-            {
-                curr = curr+1;
-            }
-
-            if (RulesEvaluator.evaluate(ruleSet,serviceResponse)) {
-
-               next = workflow.get(curr).getTrueNext();
-
-            }
-            else
-            {
-                next = workflow.get(curr).getFalseNext();
-
-            }
-
-            if (next.equalsIgnoreCase(lastStep))
-            {
-                break;
-            }
-
-            if (next.equalsIgnoreCase(nextRule))
-            {
-                curr=curr+1;  // next rule
-
-            }
-            else
-            {
-                curr = getLocation(next,workflow);
-            }
-
-
-        }*/
 
 
         String next =  wf.first.getServiceName();

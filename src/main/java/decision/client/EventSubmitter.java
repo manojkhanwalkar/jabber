@@ -21,7 +21,7 @@ public class EventSubmitter {
 
         EventSubmitter submitter = new EventSubmitter();
         submitter.test1();
-        submitter.test2();
+       submitter.test2();
         submitter.test3();
 
     }
@@ -31,7 +31,7 @@ public class EventSubmitter {
     {
         DecisionRequest request = new DecisionRequest();
         request.setRequestId(UUID.randomUUID().toString());
-        request.setWorkflowId("WF2");
+        request.setWorkflowId("WF3");
 
         Event event = new Event();
 
@@ -48,7 +48,7 @@ public class EventSubmitter {
     {
         DecisionRequest request = new DecisionRequest();
         request.setRequestId(UUID.randomUUID().toString());
-        request.setWorkflowId("WF2");
+        request.setWorkflowId("WF3");
 
         Event event = new Event();
 
@@ -65,7 +65,7 @@ public class EventSubmitter {
     {
         DecisionRequest request = new DecisionRequest();
         request.setRequestId(UUID.randomUUID().toString());
-        request.setWorkflowId("WF2");
+        request.setWorkflowId("WF3");
 
         Event event = new Event();
 

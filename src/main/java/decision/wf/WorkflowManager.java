@@ -63,6 +63,27 @@ public class WorkflowManager {
         ServiceLocator.getInstance().put(firstService, new FirstService());
 
 //    Rule rule1 = new Rule(,"");
+
+        {
+
+            RuleSet inputRuleSet = RuleSet.inputRuleSet(firstRuleSet);
+
+            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(firstService,inputRuleSet);
+
+
+            Workflow workflow = new Workflow("WF3");
+            workflow.addFirst(serviceRuleSetTuple);
+
+            RuleSet usservice = RuleSet.inputRuleSet1("USServiceRuleSet");
+
+            ServiceRuleSetTuple USServiceRulesTuple = new ServiceRuleSetTuple("USService",usservice);
+
+
+            workflow.add("USService",usservice);
+            workflowManager.addWorkFlow("WF3", workflow);
+
+        }
+
 //
         {
 
