@@ -71,6 +71,37 @@ public class WorkflowManager {
             ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(firstService,inputRuleSet);
 
 
+            Workflow workflow = new Workflow("WF1");
+
+            workflow.addFirst(serviceRuleSetTuple);
+
+
+            workflowManager.addWorkFlow("WF1", workflow);
+
+        }
+
+
+        {
+
+            RuleSet inputRuleSet = RuleSet.inputRuleSet1(firstRuleSet);
+
+            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(firstService,inputRuleSet);
+
+            Workflow workflow = new Workflow("WF2");
+
+            workflow.addFirst(serviceRuleSetTuple);
+
+            workflowManager.addWorkFlow("WF2", workflow);
+
+        }
+
+/*        {
+
+            RuleSet inputRuleSet = RuleSet.inputRuleSet1(firstRuleSet);
+
+            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(firstService,inputRuleSet);
+
+
             //  RuleSet ruleSet = RuleSet.testSet1("Rule1");
 
             //RuleSet ruleSet2 = RuleSet.testSet2("Rule2");
@@ -88,15 +119,15 @@ public class WorkflowManager {
 
             workflowManager.addWorkFlow("WF1", workflow);
 
-        }
+        }*/
 
 
 
         String str = JSONUtil.toJSON(workflowManager);
 
-        LogManager.getInstance().log(str, Logger.LogLevels.INFO);
+        //LogManager.getInstance().log(str, Logger.LogLevels.INFO);
 
-        //System.out.println(str);
+        System.out.println(str);
 
         return workflowManager;
 

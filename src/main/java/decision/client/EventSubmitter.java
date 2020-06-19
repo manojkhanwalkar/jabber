@@ -20,7 +20,9 @@ public class EventSubmitter {
     public static void main(String[] args) {
 
         EventSubmitter submitter = new EventSubmitter();
-        submitter.test();
+        submitter.test1();
+        submitter.test2();
+        submitter.test3();
 
     }
 

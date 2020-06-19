@@ -3,9 +3,13 @@ package decision.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import static decision.engine.Rule.lastStep;
+import static decision.engine.Rule.nextRule;
+
 public class RuleSet
 {
     String name;
+
 
     public String getName() {
         return name;
@@ -67,16 +71,31 @@ public class RuleSet
         return ruleSet;
     }
 
+    public static RuleSet inputRuleSet1(String name) {
+
+        RuleSet ruleSet = new RuleSet(name);
+
+        Rule rule1 = new Rule("BigLoanGiver", nextRule);
+        rule1.add(new Condition("age" , Condition.Operator.gt , "18", Condition.OperandType.integer));
+        rule1.add(new Condition("amount" , Condition.Operator.gt , "10000", Condition.OperandType.integer));
+
+        ruleSet.rules.add(rule1);
+
+        Rule rule2 = new Rule("MiscLoanGiver", lastStep);
+        rule2.add(new Condition("age" , Condition.Operator.gt , "18", Condition.OperandType.integer));
+        rule2.add(new Condition("amount" , Condition.Operator.lte , "10000", Condition.OperandType.integer));
+
+        ruleSet.rules.add(rule2);
+
+        return ruleSet;
+
+    }
+
+
 
    /* public static RuleSet testSet2(String name)
     {
-        RuleSet ruleSet = new RuleSet(name);
 
-        Rule rule1 = new Rule();
-        rule1.add(new Condition("age" , Condition.Operator.gt , "18", Condition.OperandType.integer));
-        rule1.add(new Condition("country" , Condition.Operator.eq , "US", Condition.OperandType.integer));
-
-        return ruleSet;
     }*/
 
 
