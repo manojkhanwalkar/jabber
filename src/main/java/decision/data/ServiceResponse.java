@@ -38,6 +38,11 @@ public class ServiceResponse {
         this.serviceDecisionElements = serviceDecisionElements;
     }
 
+    public void addServiceDecisionElements(HashMap<String, String> serviceDecisionElements) {
+        this.serviceDecisionElements.putAll(serviceDecisionElements);
+    }
+
+
     public String getRawResponse() {
         return rawResponse;
     }
