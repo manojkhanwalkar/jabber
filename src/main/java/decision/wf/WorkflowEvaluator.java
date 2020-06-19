@@ -28,8 +28,9 @@ public class WorkflowEvaluator {
 
         for (int i=0;i<services.length;i++)
         {
+            final int x = i;
             futures[i]= CompletableFuture.supplyAsync(()->{
-                Service service = ServiceLocator.getInstance().get(next).get();
+                Service service = ServiceLocator.getInstance().get(services[x]).get();
                 ServiceResponse serviceResponse=service.evaluate(request.getEvent());
 
                 return serviceResponse;

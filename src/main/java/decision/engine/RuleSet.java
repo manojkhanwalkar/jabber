@@ -76,13 +76,13 @@ public class RuleSet
 
         RuleSet ruleSet = new RuleSet(name);
 
-        Rule rule1 = new Rule("BigLoanGiver", nextRule);
+        Rule rule1 = new Rule("BigLoanGiver,AmountValidator", nextRule);
         rule1.add(new Condition("age" , Condition.Operator.gt , "18", Condition.OperandType.integer));
         rule1.add(new Condition("amount" , Condition.Operator.gt , "10000", Condition.OperandType.integer));
 
         ruleSet.rules.add(rule1);
 
-        Rule rule2 = new Rule("MiscLoanGiver", lastStep);
+        Rule rule2 = new Rule("MiscLoanGiver,AmountValidator", lastStep);
         rule2.add(new Condition("age" , Condition.Operator.gt , "18", Condition.OperandType.integer));
         rule2.add(new Condition("amount" , Condition.Operator.lte , "10000", Condition.OperandType.integer));
 
