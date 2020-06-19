@@ -89,7 +89,7 @@ public class EventSubmitter {
         Event event = new Event();
 
         event.put("age", "50");
-        event.put("country","US");
+        event.put("country","CAN");
         event.put("amount", "5000");
         request.setEvent(event);
 

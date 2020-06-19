@@ -11,8 +11,7 @@ import decision.service.ServiceLocator;
 import java.util.List;
 import java.util.UUID;
 
-import static decision.wf.ServiceRuleSetTuple.lastStep;
-import static decision.wf.ServiceRuleSetTuple.nextRule;
+import static decision.engine.Rule.lastStep;
 
 public class WorkflowEvaluator {
 
@@ -25,7 +24,7 @@ public class WorkflowEvaluator {
         decisionResponse.setRequestId(request.getRequestId());
         decisionResponse.setResponseId(UUID.randomUUID().toString());
 
-        int curr=0;
+    /*    int curr=0;
         while(curr<workflow.size())
         {
             String serviceName = workflow.get(curr).getServiceName();
@@ -72,7 +71,35 @@ public class WorkflowEvaluator {
             }
 
 
+        }*/
+
+
+        String next =  wf.first.getServiceName();
+        RuleSet ruleSet = wf.first.getRuleSet();
+
+        while(true)
+        {
+            Service service = ServiceLocator.getInstance().get(next).get();
+            ServiceResponse serviceResponse=service.evaluate(request.getEvent());
+            decisionResponse.addRawResponse(serviceResponse);
+
+            if (ruleSet==null) // last service processed
+                break;
+
+            next =  RulesEvaluator.evaluate(ruleSet,serviceResponse);
+
+           if (next.equals(lastStep))
+               break;
+
+           int curr = getLocation(next,workflow);
+           if (curr<0)
+               ruleSet=null;
+           else
+                ruleSet = workflow.get(curr).getRuleSet();
+
         }
+
+
 
         wf.OnTerminate(decisionResponse);
         return decisionResponse;

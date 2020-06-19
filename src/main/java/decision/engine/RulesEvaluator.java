@@ -7,10 +7,10 @@ import java.util.Random;
 
 public class RulesEvaluator {
 
-    public static boolean evaluate(RuleSet ruleSet, ServiceResponse serviceResponse)
+    public static String evaluate(RuleSet ruleSet, ServiceResponse serviceResponse)
     {
 
-        boolean result = false;
+        String result ;
         for (int i=0;i<ruleSet.rules.size();i++)
         {
             Rule rule = ruleSet.rules.get(i);
@@ -18,14 +18,17 @@ public class RulesEvaluator {
             result = rule.evaluate(serviceResponse);
             System.out.println(rule + " evaluated to " + result);
 
-            if (result) {
-                serviceResponse.setServiceDecision("Approved");
+            if (result.equals(Rule.nextRule))
+                continue;
+            else
+            {
                 return result;
             }
+
         }
 
-        serviceResponse.setServiceDecision("Rejected");
-        return result;
+        return Rule.lastStep;   // none of the rules indicated an action , terminate the workflow
+
 
     }
 

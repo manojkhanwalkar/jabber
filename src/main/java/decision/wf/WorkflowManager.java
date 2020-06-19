@@ -11,8 +11,8 @@ import util.JSONUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-import static decision.wf.ServiceRuleSetTuple.lastStep;
-import static decision.wf.ServiceRuleSetTuple.nextRule;
+import static decision.wf.Workflow.firstRuleSet;
+import static decision.wf.Workflow.firstService;
 
 public class WorkflowManager {
 
@@ -57,19 +57,34 @@ public class WorkflowManager {
         ServiceLocator.getInstance().put("AmountValidator", new AmountValidator());
         ServiceLocator.getInstance().put("BigLoanGiver", new BigLoanGiver());
         ServiceLocator.getInstance().put("MiscLoanGiver", new MiscLoanGiver());
+        ServiceLocator.getInstance().put("MiscLoanGiver", new MiscLoanGiver());
+        ServiceLocator.getInstance().put("USService", new USService());
+        ServiceLocator.getInstance().put("InternationalService", new InternationalService());
+        ServiceLocator.getInstance().put(firstService, new FirstService());
 
-
+//    Rule rule1 = new Rule(,"");
+//
         {
-            RuleSet ruleSet = RuleSet.testSet1("Rule1");
 
-            RuleSet ruleSet2 = RuleSet.testSet2("Rule2");
+            RuleSet inputRuleSet = RuleSet.inputRuleSet(firstRuleSet);
 
-            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple("ScoreCreator", ruleSet, "PIIValidator", nextRule);
-            ServiceRuleSetTuple serviceRuleSetTuple2 = new ServiceRuleSetTuple("PIIValidator", ruleSet2, lastStep, lastStep);
+            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(firstService,inputRuleSet);
+
+
+            //  RuleSet ruleSet = RuleSet.testSet1("Rule1");
+
+            //RuleSet ruleSet2 = RuleSet.testSet2("Rule2");
+
+            //ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple("ScoreCreator", ruleSet, "PIIValidator", nextRule);
+            //ServiceRuleSetTuple serviceRuleSetTuple2 = new ServiceRuleSetTuple("PIIValidator", ruleSet2, lastStep, lastStep);
 
             Workflow workflow = new Workflow("WF1");
-            workflow.add(serviceRuleSetTuple);
-            workflow.add(serviceRuleSetTuple2);
+
+            workflow.addFirst(serviceRuleSetTuple);
+
+
+            //workflow.add(serviceRuleSetTuple);
+            //workflow.add(serviceRuleSetTuple2);
 
             workflowManager.addWorkFlow("WF1", workflow);
 

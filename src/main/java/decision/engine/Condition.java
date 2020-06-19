@@ -103,24 +103,32 @@ public class Condition
             case eq:
                 if(equals)
                     return true;
+               break;
             case gt:
                 if (i >0)
                     return true;
+                break;
             case lt:
                 if (i <0)
                     return true;
+                break;
             case gte:
                 if(i >=0)
                     return true;
+                break;
             case lte:
                 if(i <=0)
                     return true;
+                break;
             case neq:
                 if(!equals)
                     return true;
+                break;
 
             default : System.out.println("Not implemented"); return false;
         }
+
+        return false;
     }
 
 

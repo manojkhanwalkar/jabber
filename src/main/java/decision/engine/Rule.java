@@ -8,6 +8,17 @@ import java.util.Random;
 
 public class Rule {
 
+    public static String lastStep = "terminate";
+    public static String nextRule = "nextRule";
+
+    String trueNext;
+    String falseNext;
+
+
+
+  //  String nextStep;
+
+
     List<Condition> conditions= new ArrayList<>();
 
     public List<Condition> getConditions() {
@@ -23,30 +34,27 @@ public class Rule {
         conditions.add(condition);
     }
 
-    public boolean evaluate(ServiceResponse serviceResponse)
+    public Rule(String trueNext , String falseNext)
+    {
+        this.trueNext=trueNext;
+        this.falseNext=falseNext;
+    }
+
+
+    public String evaluate(ServiceResponse serviceResponse)
     {
 
        for (Condition condition :conditions)
        {
            boolean result = condition.evaluate(serviceResponse);
            if (!result)
-               return false;
+               return falseNext;
        }
 
-       return true;
+       return trueNext;
 
     }
 
 
 
-
-    /*
-
-     private static boolean evaluate (Condition rule , ServiceResponse serviceResponse)
-    {
-
-
-    }
-     */
-    //TODO - action might need to be associated at this level.
 }

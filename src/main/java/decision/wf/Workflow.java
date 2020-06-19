@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Workflow {
+
+    public static String firstRuleSet = "InputRuleSet";
+    public static String firstService = "FirstService";
     String name ;
 
     public Workflow(String name)
@@ -37,9 +40,9 @@ public class Workflow {
 
     ArrayList<ServiceRuleSetTuple> serviceRuleSetTuples = new ArrayList<>();
 
-    public void add(String serviceName , RuleSet ruleSet , String trueNext, String falseNext)
+    public void add(String serviceName , RuleSet ruleSet )
     {
-            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(serviceName,ruleSet,trueNext,falseNext);
+            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(serviceName,ruleSet);
             serviceRuleSetTuples.add(serviceRuleSetTuple);
     }
 
@@ -56,11 +59,19 @@ public class Workflow {
         // for now all services that have been called need to approve to get final decision as approved
 
         decisionResponse.getRawResponses().stream().forEach(sr->{
-           if ( sr.getServiceDecision().equalsIgnoreCase("rejected"))
+           if ( sr.getServiceDecision()!=null && sr.getServiceDecision().equalsIgnoreCase("rejected"))
            {
                decisionResponse.setFinalDecision("Rejected");
                return;
            }
         });
+    }
+
+    ServiceRuleSetTuple first ;
+
+
+    public void addFirst(ServiceRuleSetTuple serviceRuleSetTuple) {
+
+        this.first = serviceRuleSetTuple;
     }
 }

@@ -36,7 +36,7 @@ public class RuleSet
     }
 
 
-    public static RuleSet testSet1(String name)
+ /*   public static RuleSet testSet1(String name)
     {
         RuleSet ruleSet = new RuleSet(name);
 
@@ -51,9 +51,24 @@ public class RuleSet
 
 
         return ruleSet;
+    }*/
+
+    public static RuleSet inputRuleSet(String name)
+    {
+        RuleSet ruleSet = new RuleSet(name);
+
+        Rule rule1 = new Rule("USService","InternationalService");
+        rule1.add(new Condition("country" , Condition.Operator.eq , "US", Condition.OperandType.string));
+
+
+        ruleSet.rules.add(rule1);
+
+
+        return ruleSet;
     }
 
-    public static RuleSet testSet2(String name)
+
+   /* public static RuleSet testSet2(String name)
     {
         RuleSet ruleSet = new RuleSet(name);
 
@@ -62,7 +77,7 @@ public class RuleSet
         rule1.add(new Condition("country" , Condition.Operator.eq , "US", Condition.OperandType.integer));
 
         return ruleSet;
-    }
+    }*/
 
 
 
