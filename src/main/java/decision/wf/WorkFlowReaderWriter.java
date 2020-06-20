@@ -1,4 +1,4 @@
-package decision;
+package decision.wf;
 
 import decision.data.Event;
 import decision.engine.RuleSet;
@@ -6,25 +6,91 @@ import decision.engine.RuleSet;
 import decision.engine.RulesEvaluator;
 import decision.wf.ServiceRuleSetTuple;
 import decision.wf.Workflow;
+import decision.wf.WorkflowManager;
+import netscape.javascript.JSObject;
 import util.JSONUtil;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static decision.wf.Workflow.firstRuleSet;
 import static decision.wf.Workflow.firstService;
 
-public class RulesTester {
+public class WorkFlowReaderWriter {
+
+
+    static       String dir = "/home/manoj/data/decision/";
 
     public static void main(String[] args) throws Exception {
 
-        createWFFiles();
+       createWFFiles();
 
-
-        //      WorkflowManager workflowManager = new WorkflowManager();
+        get();
 
     }
+
+    public static WorkflowManager get()
+    {
+        WorkflowManager workflowManager = new WorkflowManager();
+
+        List<File> files = new ArrayList<>();
+
+        listf(dir,files);
+
+        System.out.println(files);
+
+        files.stream().forEach(file-> {
+
+
+            Workflow workflow = readFromFile(file.getAbsolutePath());
+
+
+            workflowManager.addWorkFlow(workflow.getName(),workflow);
+        });
+
+        return workflowManager;
+
+    }
+
+    public static void listf(String directoryName, List<File> files) {
+        File directory = new File(directoryName);
+
+        // Get all files from a directory.
+        File[] fList = directory.listFiles();
+        if(fList != null)
+            for (File file : fList) {
+                if (file.isFile()) {
+                    files.add(file);
+                } else if (file.isDirectory()) {
+                    listf(file.getAbsolutePath(), files);
+                }
+            }
+    }
+
+
+    private static Workflow readFromFile(String fileName)
+    {
+        try(BufferedReader reader = new BufferedReader(new FileReader(new File(fileName))))
+        {
+
+            String line = reader.readLine();
+
+            System.out.println(line);
+
+            Workflow workflow = (Workflow) JSONUtil.fromJSON(line,Workflow.class);
+
+            return workflow;
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
 
     private static void writeToFile(File file, Workflow workflow) throws Exception
     {
@@ -42,7 +108,6 @@ public class RulesTester {
 
     public static void createWFFiles() throws Exception
     {
-        String dir = "/home/manoj/data/decision/";
 
 
         {

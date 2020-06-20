@@ -14,9 +14,11 @@ public class Rule {
     String trueNext;
     String falseNext;
 
+    public Rule() {
+    }
 
 
-  //  String nextStep;
+    //  String nextStep;
 
 
     List<Condition> conditions= new ArrayList<>();

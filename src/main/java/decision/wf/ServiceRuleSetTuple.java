@@ -9,8 +9,8 @@ public class ServiceRuleSetTuple {
     String serviceName;
     RuleSet ruleSet;
 
-
-
+    public ServiceRuleSetTuple() {
+    }
 
     public ServiceRuleSetTuple(String serviceName, RuleSet ruleSet) {
         this.serviceName = serviceName;

@@ -46,8 +46,24 @@ public class WorkflowManager {
         workflows.put(name,workflow);
     }
 
-
     public static WorkflowManager init()
+    {
+
+        WorkflowManager workflowManager = new WorkflowManager();
+
+        ServiceLocator.getInstance().put("ScoreCreator", new ScoreCreator());
+        ServiceLocator.getInstance().put("PIIValidator", new PIIValidator());
+        ServiceLocator.getInstance().put("AmountValidator", new AmountValidator());
+        ServiceLocator.getInstance().put("BigLoanGiver", new BigLoanGiver());
+        ServiceLocator.getInstance().put("MiscLoanGiver", new MiscLoanGiver());
+        ServiceLocator.getInstance().put("MiscLoanGiver", new MiscLoanGiver());
+        ServiceLocator.getInstance().put("USService", new USService());
+        ServiceLocator.getInstance().put("InternationalService", new InternationalService());
+        ServiceLocator.getInstance().put(firstService, new FirstService());
+        return WorkFlowReaderWriter.get();
+    }
+
+  /*  public static WorkflowManager init()
     {
 
         WorkflowManager workflowManager = new WorkflowManager();
@@ -116,31 +132,7 @@ public class WorkflowManager {
 
         }
 
-/*        {
-
-            RuleSet inputRuleSet = RuleSet.inputRuleSet1(firstRuleSet);
-
-            ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple(firstService,inputRuleSet);
-
-
-            //  RuleSet ruleSet = RuleSet.testSet1("Rule1");
-
-            //RuleSet ruleSet2 = RuleSet.testSet2("Rule2");
-
-            //ServiceRuleSetTuple serviceRuleSetTuple = new ServiceRuleSetTuple("ScoreCreator", ruleSet, "PIIValidator", nextRule);
-            //ServiceRuleSetTuple serviceRuleSetTuple2 = new ServiceRuleSetTuple("PIIValidator", ruleSet2, lastStep, lastStep);
-
-            Workflow workflow = new Workflow("WF1");
-
-            workflow.addFirst(serviceRuleSetTuple);
-
-
-            //workflow.add(serviceRuleSetTuple);
-            //workflow.add(serviceRuleSetTuple2);
-
-            workflowManager.addWorkFlow("WF1", workflow);
-
-        }*/
+/
 
 
 
@@ -156,5 +148,5 @@ public class WorkflowManager {
 
 
 
-    }
+    }*/
 }

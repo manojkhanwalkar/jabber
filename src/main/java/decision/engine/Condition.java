@@ -65,8 +65,15 @@ public class Condition
     }
 
 
+    public OperandType getType() {
+        return type;
+    }
 
-     boolean evaluate( ServiceResponse serviceResponse)
+    public void setType(OperandType type) {
+        this.type = type;
+    }
+
+    boolean evaluate(ServiceResponse serviceResponse)
     {
         String lhs = serviceResponse.getServiceDecisionElements().get(field);
 
