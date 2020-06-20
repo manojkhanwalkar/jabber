@@ -70,6 +70,14 @@ public class Workflow {
     ServiceRuleSetTuple first ;
 
 
+    public ServiceRuleSetTuple getFirst() {
+        return first;
+    }
+
+    public void setFirst(ServiceRuleSetTuple first) {
+        this.first = first;
+    }
+
     public void addFirst(ServiceRuleSetTuple serviceRuleSetTuple) {
 
         this.first = serviceRuleSetTuple;

@@ -55,6 +55,35 @@ public class Rule {
 
     }
 
+    public static String getLastStep() {
+        return lastStep;
+    }
 
+    public static void setLastStep(String lastStep) {
+        Rule.lastStep = lastStep;
+    }
 
+    public static String getNextRule() {
+        return nextRule;
+    }
+
+    public static void setNextRule(String nextRule) {
+        Rule.nextRule = nextRule;
+    }
+
+    public String getTrueNext() {
+        return trueNext;
+    }
+
+    public void setTrueNext(String trueNext) {
+        this.trueNext = trueNext;
+    }
+
+    public String getFalseNext() {
+        return falseNext;
+    }
+
+    public void setFalseNext(String falseNext) {
+        this.falseNext = falseNext;
+    }
 }
