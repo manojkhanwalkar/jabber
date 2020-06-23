@@ -2,11 +2,59 @@ package matcher;
 
 public class MatchCriteria {
 
-    Profile profile;
 
 
+    AgeCriteria ageCriteria = AgeCriteria.any();
 
-    AgeCriteria ageCriteria;
+    GenderCriteria genderCriteria= GenderCriteria.any();
+
+    HeightCriteria heightCriteria= HeightCriteria.any();
+
+    InterestCriteria interestCriteria = InterestCriteria.any();
+
+    ReligionCriteria religionCriteria = ReligionCriteria.any();
+
+    StateCriteria stateCriteria= StateCriteria.any();
+
+    public GenderCriteria getGenderCriteria() {
+        return genderCriteria;
+    }
+
+    public void setGenderCriteria(GenderCriteria genderCriteria) {
+        this.genderCriteria = genderCriteria;
+    }
+
+    public HeightCriteria getHeightCriteria() {
+        return heightCriteria;
+    }
+
+    public void setHeightCriteria(HeightCriteria heightCriteria) {
+        this.heightCriteria = heightCriteria;
+    }
+
+    public InterestCriteria getInterestCriteria() {
+        return interestCriteria;
+    }
+
+    public void setInterestCriteria(InterestCriteria interestCriteria) {
+        this.interestCriteria = interestCriteria;
+    }
+
+    public ReligionCriteria getReligionCriteria() {
+        return religionCriteria;
+    }
+
+    public void setReligionCriteria(ReligionCriteria religionCriteria) {
+        this.religionCriteria = religionCriteria;
+    }
+
+    public StateCriteria getStateCriteria() {
+        return stateCriteria;
+    }
+
+    public void setStateCriteria(StateCriteria stateCriteria) {
+        this.stateCriteria = stateCriteria;
+    }
 
     public AgeCriteria getAgeCriteria() {
         return ageCriteria;
@@ -16,11 +64,6 @@ public class MatchCriteria {
         this.ageCriteria = ageCriteria;
     }
 
-    public Profile getProfile() {
-        return profile;
-    }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
+
 }

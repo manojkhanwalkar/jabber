@@ -48,8 +48,29 @@ public class InterestCriteria {
 
     }
 
+    public boolean isAny() {
+        return any;
+    }
 
+    public void setAny(boolean any) {
+        this.any = any;
+    }
 
+    public ArrayList<Profile.Interests> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(ArrayList<Profile.Interests> interests) {
+        this.interests = interests;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public boolean evaluate(Profile other)
     {

@@ -5,11 +5,11 @@ import java.util.List;
 
 public class Profile {
 
-    public enum Religion { C, M, H , B , Any };
+    public enum Religion { C, M, H , B };
 
-    public enum Interests { sports, movies , cars, technology, finance , gardening, All};
+    public enum Interests { sports, movies , cars, technology, finance , gardening};
 
-    public enum State { Any , PA , NJ , NY , FL, WA , CA};
+    public enum State {  PA , NJ , NY , FL, WA , CA};
 
     public enum Gender { M , F }
 
@@ -199,12 +199,27 @@ public class Profile {
         }
 
 
-        public ProfileBuilder gender(MatchCriteria matchCriteria)
+        public ProfileBuilder match(MatchCriteria matchCriteria)
         {
             this.matchCriteria = matchCriteria;
             return this;
         }
 
 
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", age=" + age +
+                ", height=" + height +
+                ", religion=" + religion +
+                ", state=" + state +
+                ", gender=" + gender +
+                ", matchCriteria=" + matchCriteria +
+                ", interests=" + interests +
+                '}';
     }
 }

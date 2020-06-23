@@ -37,8 +37,21 @@ public class ReligionCriteria {
     }
 
 
+    public boolean isAny() {
+        return any;
+    }
 
+    public void setAny(boolean any) {
+        this.any = any;
+    }
 
+    public ArrayList<Profile.Religion> getReligions() {
+        return religions;
+    }
+
+    public void setReligions(ArrayList<Profile.Religion> religions) {
+        this.religions = religions;
+    }
 
     public boolean evaluate(Profile other)
     {

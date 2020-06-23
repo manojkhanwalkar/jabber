@@ -31,8 +31,21 @@ public class StateCriteria {
     }
 
 
+    public boolean isAny() {
+        return any;
+    }
 
+    public void setAny(boolean any) {
+        this.any = any;
+    }
 
+    public ArrayList<Profile.State> getStates() {
+        return states;
+    }
+
+    public void setStates(ArrayList<Profile.State> states) {
+        this.states = states;
+    }
 
     public boolean evaluate(Profile other)
     {

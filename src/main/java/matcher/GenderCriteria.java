@@ -32,9 +32,29 @@ public class GenderCriteria {
 
     }
 
+    public boolean isAny() {
+        return any;
+    }
 
+    public void setAny(boolean any) {
+        this.any = any;
+    }
 
+    public boolean isOpposite() {
+        return opposite;
+    }
 
+    public void setOpposite(boolean opposite) {
+        this.opposite = opposite;
+    }
+
+    public Profile.Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Profile.Gender gender) {
+        this.gender = gender;
+    }
 
     public boolean evaluate(Profile other)
     {

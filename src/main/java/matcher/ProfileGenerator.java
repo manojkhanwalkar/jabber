@@ -1,7 +1,10 @@
 package matcher;
 
+import util.JSONUtil;
+
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -9,8 +12,16 @@ import java.util.Random;
 public class ProfileGenerator {
 
 
-    public static void main(String[] args) throws Exception  {
+    public static void main(String[] args) throws Exception {
 
+       // generateProfiles();
+        readProfiles().stream().forEach(p->System.out.println(p));
+
+    }
+
+
+    static void generateProfiles() throws Exception
+    {
        //  /home/manoj/data/matcher
         File file = new File("/home/manoj/data/matcher/profiles");
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
@@ -18,13 +29,57 @@ public class ProfileGenerator {
         for (int i=0;i<100;i++)
         {
             Profile.ProfileBuilder builder = Profile.builder();
-            builder.name(getName(5)).age(getAge(20,30)).gender(getGender()).height(getHeight(150,180)).interests(getInterests(3))
-                    .id(getId()).religion(getReligion()).state(getState());
+            builder.name(getName(5))
+                  .age(getAge(20,30))
+                    .gender(getGender())
+                    .height(getHeight(150,180))
+                    .interests(getInterests(3))
+                    .id(getId())
+                    .religion(getReligion())
+                    .state(getState())
+                    .match(getDefaultCriteria());
+
+            Profile profile = builder.build();
+
+            bufferedWriter.write(JSONUtil.toJSON(profile));
+            bufferedWriter.newLine();
         }
+
+        bufferedWriter.flush();
+        bufferedWriter.close();
+
+    }
+
+
+    static List<Profile>  readProfiles() throws Exception
+    {
+        File file = new File("/home/manoj/data/matcher/profiles");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+        String line = bufferedReader.readLine();
+
+        List<Profile> profiles = new ArrayList<>();
+        while(line!=null) {
+
+            Profile profile = (Profile)JSONUtil.fromJSON(line,Profile.class);
+
+            profiles.add(profile);
+
+            line = bufferedReader.readLine();
+        }
+
+        return profiles;
 
     }
 
     static Random random= new Random();
+
+    public static MatchCriteria getDefaultCriteria()
+    {
+        return new MatchCriteria();
+    }
+
+
     public static String getName(int length)
     {
         StringBuilder builder = new StringBuilder(length);
@@ -96,7 +151,8 @@ public class ProfileGenerator {
 
             num = random.nextInt(num);
 
-            interests.add(Profile.Interests.values()[num]);
+            if (!interests.contains(Profile.Interests.values()[num]))
+                 interests.add(Profile.Interests.values()[num]);
 
         }
 
