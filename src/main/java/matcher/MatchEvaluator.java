@@ -1,27 +1,40 @@
 package matcher;
 
-public class MatchEvaluator implements Criteria {
+public class MatchEvaluator  {
 
-    @Override
-    public boolean evaluate(Profile profile1, Profile profile2) {
+
+    public static boolean evaluate(Profile profile1, Profile profile2) {
 
         // evaluate profile one against profile 2 and then reverse .
 
         MatchCriteria matchCriteria = profile1.getMatchCriteria();
-        AgeCriteria ageCriteria = matchCriteria.getAgeCriteria();
 
-        boolean result1 = ageCriteria.evaluate(profile1);
+        boolean result1 = evaluate(matchCriteria, profile2);
 
         matchCriteria = profile2.getMatchCriteria();
-        ageCriteria = matchCriteria.getAgeCriteria();
 
-        boolean result2 = ageCriteria.evaluate(profile2);
+        boolean result2 = evaluate(matchCriteria, profile1);
 
         return result1&&result2;
 
-//TODO - add more match criteria here .
 
-//TODO - come up with a scoring scheme to allow partial matches
 
+    }
+
+    private static  boolean evaluate(MatchCriteria matchCriteria , Profile other)
+    {
+        AgeCriteria ageCriteria = matchCriteria.getAgeCriteria();
+        GenderCriteria genderCriteria = matchCriteria.getGenderCriteria();
+        StateCriteria stateCriteria = matchCriteria.getStateCriteria();
+        InterestCriteria interestCriteria = matchCriteria.getInterestCriteria();
+        ReligionCriteria religionCriteria = matchCriteria.getReligionCriteria();
+        HeightCriteria heightCriteria = matchCriteria.getHeightCriteria();
+
+
+        return ageCriteria.evaluate(other) && genderCriteria.evaluate(other)
+                && stateCriteria.evaluate(other)
+                && interestCriteria.evaluate(other)
+                && religionCriteria.evaluate(other)
+                && heightCriteria.evaluate(other);
     }
 }

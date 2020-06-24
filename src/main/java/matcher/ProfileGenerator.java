@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import java.util.concurrent.CompletableFuture;
 
 
 public class ProfileGenerator {
@@ -14,8 +14,20 @@ public class ProfileGenerator {
 
     public static void main(String[] args) throws Exception {
 
+        ProfileManager manager = new ProfileManager();
        // generateProfiles();
-        readProfiles().stream().forEach(p->System.out.println(p));
+        readProfiles().stream().forEach(p->{
+
+                manager.add(p);
+            CompletableFuture.runAsync(new MatchProcessor(manager,p));
+
+                });
+
+
+        Thread.sleep(5000);
+        System.out.println(manager.matches);
+
+
 
     }
 
