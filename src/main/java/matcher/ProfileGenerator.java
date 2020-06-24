@@ -57,7 +57,7 @@ public class ProfileGenerator {
                     .id(getId())
                     .religion(getReligion())
                     .state(getState())
-                    .match(getCriteria1(builder.gender,22,26, Profile.State.CA));
+                    .match(getCriteria1(builder.gender,Profile.State.CA));
                    // .match(getDefaultCriteria());
 
             Profile profile = builder.build();
@@ -101,13 +101,34 @@ public class ProfileGenerator {
     }
 
 
-    public static MatchCriteria getCriteria1(Profile.Gender curr, int minAge, int maxAge, Profile.State state)
+    public static MatchCriteria getCriteria1(Profile.Gender curr, Profile.State state)
     {
+        Random random = new Random();
+
         MatchCriteria matchCriteria = new MatchCriteria();
-        GenderCriteria genderCriteria= new GenderCriteria(curr,true);
+
+        int option = random.nextInt(3);
+
+        GenderCriteria genderCriteria;
+        switch(option)
+        {
+            case 0:
+                genderCriteria = GenderCriteria.any();
+                break;
+            case 1 :
+                genderCriteria = GenderCriteria.opp(curr);
+                break;
+            case 2:
+                genderCriteria = GenderCriteria.same(curr);
+                break;
+
+            default :
+                genderCriteria = GenderCriteria.opp(curr);
+        }
+
         matchCriteria.setGenderCriteria(genderCriteria);
 
-        AgeCriteria ageCriteria = new AgeCriteria(minAge,maxAge);
+        AgeCriteria ageCriteria = new AgeCriteria(20+random.nextInt(5),20+random.nextInt(10));
 
         matchCriteria.setAgeCriteria(ageCriteria);
 

@@ -14,6 +14,20 @@ public class GenderCriteria {
         return new GenderCriteria(true);
     }
 
+    public static GenderCriteria same(Profile.Gender gender)
+    {
+
+        return new GenderCriteria(gender,false);
+    }
+
+    public static GenderCriteria opp(Profile.Gender gender)
+    {
+
+        return new GenderCriteria(gender,true);
+    }
+
+
+
     public GenderCriteria() {
     }
 
