@@ -56,6 +56,7 @@ public class MatcherResource {
     public Profiles query(String profileId) {
 
 
+        //System.out.println(profileId);
         return manager.get(profileId);
 
 

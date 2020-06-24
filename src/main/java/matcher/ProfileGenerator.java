@@ -1,5 +1,7 @@
 package matcher;
 
+import slacker.data.PostRequest;
+import util.Connection;
 import util.JSONUtil;
 
 import java.io.*;
@@ -15,21 +17,54 @@ public class ProfileGenerator {
     public static void main(String[] args) throws Exception {
 
 
-        // generateProfiles();
+        generateProfiles();
 
         // send create requests
 
          readProfiles().stream().forEach(p-> {
+
+             submitCreate(p);
 
          });
 
          // send match requests
 
 
+        readProfiles().stream().forEach(p-> {
 
+            Profiles profiles = submitMatches(String.valueOf(p.getId()));
+
+            System.out.println("No of matches are " + profiles.profiles.size() + " "+  p.getId() + "  matches " + profiles.profiles);
+
+        });
 
 
     }
+
+    private static void submitCreate(Profile profile)
+    {
+        // send to scheduler a jar file and client name and get back a job id .
+
+        Connection app = new Connection("https://localhost:8780/");
+
+        app.sendSimple(JSONUtil.toJSON(profile),"create");
+
+    }
+
+    private static Profiles submitMatches(String profileId)
+    {
+        // send to scheduler a jar file and client name and get back a job id .
+
+       // System.out.println(profileId);
+
+        Connection app = new Connection("https://localhost:8780/");
+
+        String result = app.sendSimple(profileId,"match");
+
+        return (Profiles) JSONUtil.fromJSON(result,Profiles.class);
+
+    }
+
 
 
     static void generateProfiles() throws Exception
