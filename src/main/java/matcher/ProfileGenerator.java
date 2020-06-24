@@ -15,8 +15,11 @@ public class ProfileGenerator {
     public static void main(String[] args) throws Exception {
 
         ProfileManager manager = new ProfileManager();
-       // generateProfiles();
-        readProfiles().stream().forEach(p->{
+
+         generateProfiles();
+
+
+         readProfiles().stream().forEach(p->{
 
                 manager.add(p);
             CompletableFuture.runAsync(new MatchProcessor(manager,p));
@@ -25,7 +28,12 @@ public class ProfileGenerator {
 
 
         Thread.sleep(5000);
-        System.out.println(manager.matches);
+
+
+        manager.matches.entrySet().stream().forEach(entry->{
+
+            System.out.println("Matches " + entry.getValue().size() + "  " + entry.getKey() + "==> " + entry.getValue());
+        });
 
 
 
@@ -49,7 +57,8 @@ public class ProfileGenerator {
                     .id(getId())
                     .religion(getReligion())
                     .state(getState())
-                    .match(getDefaultCriteria());
+                    .match(getCriteria1(builder.gender,22,26, Profile.State.CA));
+                   // .match(getDefaultCriteria());
 
             Profile profile = builder.build();
 
@@ -90,6 +99,28 @@ public class ProfileGenerator {
     {
         return new MatchCriteria();
     }
+
+
+    public static MatchCriteria getCriteria1(Profile.Gender curr, int minAge, int maxAge, Profile.State state)
+    {
+        MatchCriteria matchCriteria = new MatchCriteria();
+        GenderCriteria genderCriteria= new GenderCriteria(curr,true);
+        matchCriteria.setGenderCriteria(genderCriteria);
+
+        AgeCriteria ageCriteria = new AgeCriteria(minAge,maxAge);
+
+        matchCriteria.setAgeCriteria(ageCriteria);
+
+        ArrayList<Profile.State> states = new ArrayList<>();
+        states.add(state);
+        StateCriteria stateCriteria = new StateCriteria(states);
+
+        matchCriteria.setStateCriteria(stateCriteria);
+
+
+        return matchCriteria;
+    }
+
 
 
     public static String getName(int length)

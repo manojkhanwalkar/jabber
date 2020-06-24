@@ -29,6 +29,7 @@ public class GenderCriteria {
 
         this.gender = gender;
         this.opposite=opposite;
+        any=false;
 
     }
 
