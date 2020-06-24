@@ -14,26 +14,18 @@ public class ProfileGenerator {
 
     public static void main(String[] args) throws Exception {
 
-        ProfileManager manager = new ProfileManager();
 
-         generateProfiles();
+        // generateProfiles();
 
+        // send create requests
 
-         readProfiles().stream().forEach(p->{
+         readProfiles().stream().forEach(p-> {
 
-                manager.add(p);
-            CompletableFuture.runAsync(new MatchProcessor(manager,p));
+         });
 
-                });
-
-
-        Thread.sleep(5000);
+         // send match requests
 
 
-        manager.matches.entrySet().stream().forEach(entry->{
-
-            System.out.println("Matches " + entry.getValue().size() + "  " + entry.getKey() + "==> " + entry.getValue());
-        });
 
 
 

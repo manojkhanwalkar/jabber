@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -16,6 +17,9 @@ public class ProfileManager {
     public void add(Profile profile)
     {
         profiles.put(profile.getId(),profile);
+
+        CompletableFuture.runAsync(new MatchProcessor(this,profile));
+
 
     }
 
@@ -35,4 +39,19 @@ public class ProfileManager {
         ids.add(curr.getId());
     }
 
+    public Profiles get(String str) {
+
+        Integer profileId = Integer.valueOf(str);
+        Set<Integer> profileMatches = matches.get(profileId);
+
+        Profiles matchedProfiles = new Profiles();
+
+        if (profileMatches!=null)
+        {
+            profileMatches.stream().map(match->profiles.get(match)).forEach(profile->matchedProfiles.add(profile));
+        }
+
+        return matchedProfiles;
+
+    }
 }
