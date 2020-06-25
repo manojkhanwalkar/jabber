@@ -74,7 +74,7 @@ public class CCVIPValues {
       {
           for (int i=0;i<10;i++) {
               if (prefix.startsWith("ccv"))
-                  bufferedWriter.write(generateCCV()());
+                  bufferedWriter.write(generateCCV());
               else
                   bufferedWriter.write(generateIP());
 
