@@ -1,14 +1,15 @@
 package vfs;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.apache.commons.io.filefilter.NameFileFilter;
+
+import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -35,14 +36,72 @@ public class HistoryFileGenerator {
 
     }
 
+    static class MyFileFilter implements  FilenameFilter
+    {
+        String pattern;
+
+        Date cutoffDate ;
+
+        public MyFileFilter(String pattern, int n)
+        {
+            this.pattern = pattern;
+
+            cutoff(n+1);
+        }
+
+
+        private void cutoff(int n)
+        {
+
+            Instant cutoff = Instant.now().minus(n, ChronoUnit.DAYS);
+             cutoffDate = Date.from(cutoff);
+
+        }
+
+
+        @Override
+        public boolean accept(File file, String fileName) {
+
+            try {
+
+                if (fileName.startsWith(pattern)) {
+                    String[] split = fileName.split("_");
+                    Date fileDate = new SimpleDateFormat("dd-MM-yyyy").parse(split[1]);
+                    if (fileDate.after(cutoffDate))
+                        return true;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+    }
+
+    private static List<File> lastNDays(int n, String prefix)
+    {
+
+        File file = new File(historyDir);
+
+        FilenameFilter filenameFilter = new MyFileFilter(prefix,n);
+
+        File[] files = file.listFiles(filenameFilter);
+
+
+
+        return List.of(files);
+
+    }
+
     public static void main(String[] args) throws Exception {
 
 
+        lastNDays(30,"ccv_");
         // generate files with CCV and IP values to use
         // generate history file summary for 35 days
         //
 
-        CCVIPValues.init();
+     /*   CCVIPValues.init();
 
         Instant now = Instant.now();
         for (int i=1;i<35;i++)
@@ -60,7 +119,7 @@ public class HistoryFileGenerator {
 
 
 
-        }
+        }*/
 
 
 
@@ -68,10 +127,6 @@ public class HistoryFileGenerator {
         Instant second = now.minus(25, ChronoUnit.DAYS);
 
 
-        Instant cutoff = now.minus(30, ChronoUnit.DAYS);
-
-
-        Date cutoffDate = Date.from(cutoff);
 
 
         Date secondDate = Date.from(second);
@@ -84,7 +139,7 @@ public class HistoryFileGenerator {
 
         System.out.println(formattedDate);
 
-        Date date1=new SimpleDateFormat("dd-MM-yyyy").parse(formattedDate); */
+      */
 
 
 
