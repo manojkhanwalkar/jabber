@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class CCVIPValues {
 
@@ -32,6 +33,16 @@ public class CCVIPValues {
         int index = random.nextInt(ips.size()) ;
 
         return ips.get(index);
+    }
+
+    public static List<String> getAllIps()
+    {
+        return  ips.stream().collect(Collectors.toList());
+    }
+
+    public static List<String> getAllCCVs()
+    {
+        return  ccvs.stream().collect(Collectors.toList());
     }
 
     public static String getCCV()
