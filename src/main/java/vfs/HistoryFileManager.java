@@ -3,6 +3,9 @@ package vfs;
 import org.apache.commons.io.filefilter.NameFileFilter;
 
 import java.io.*;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -11,7 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
 
-public class HistoryFileGenerator {
+public class HistoryFileManager {
 
     static         Random random = new Random();
 
@@ -75,7 +78,7 @@ public class HistoryFileGenerator {
         }
     }
 
-    private static List<File> lastNDays(int n, String prefix)
+    public static List<File> lastNDays(int n, String prefix)
     {
 
         File file = new File(historyDir);
@@ -90,7 +93,7 @@ public class HistoryFileGenerator {
 
     }
 
-    private static Map<String,Integer> veocityCount(List<File> files)
+    public static Map<String,Integer> velocityCount(List<File> files)
     {
         Map<String,Integer> map = new HashMap<>();
         files.stream().forEach(file->{
@@ -118,7 +121,31 @@ public class HistoryFileGenerator {
     public static void main(String[] args) throws Exception {
 
 
-        System.out.println(veocityCount(lastNDays(30,"ccv_")));
+
+                MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+
+                MethodType mt = MethodType.methodType(void.class, int.class);
+                MethodHandle methodHandle = publicLookup.findVirtual(HistoricalCount.class, "setLast30Days", mt);
+
+
+
+
+                    HistoricalCount historicalCount = new HistoricalCount();
+
+                    //historicalCount.setLast30Days(entry.getValue());
+
+                    try {
+                        methodHandle.invoke(historicalCount,1000);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+
+                    System.out.println(historicalCount.getLast30Days());
+
+
+
+
+     /*   System.out.println(veocityCount(lastNDays(30,"ccv_")));
 
         System.out.println(veocityCount(lastNDays(30,"ip_")));
 
@@ -128,11 +155,9 @@ public class HistoryFileGenerator {
 
         System.out.println(veocityCount(lastNDays(7,"ccv_")));
 
-        System.out.println(veocityCount(lastNDays(7,"ip_")));
+        System.out.println(veocityCount(lastNDays(7,"ip_")));*/
 
 
-        // generate files with CCV and IP values to use
-        // generate history file summary for 35 days
         //
 
      /*   CCVIPValues.init();

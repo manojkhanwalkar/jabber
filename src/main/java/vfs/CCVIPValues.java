@@ -2,58 +2,59 @@ package vfs;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CCVIPValues {
 
-    static List<String> ips = new ArrayList<>();
-    static List<String> ccvs = new ArrayList<>();
+  //  static List<String> ips = new ArrayList<>();
+   // static List<String> ccvs = new ArrayList<>();
+
+    static Map<String,List<String>>  attributeValues = new HashMap<>();
 
 
 
-    public static void init()
+    public static void init(String... attributes)  // ccv , ip
     {
-        try {
-            readDataFile("ccv");
-            readDataFile("ip");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+            Arrays.stream(attributes).forEach(attr->{
+                try {
+
+                    attributeValues.put(attr,new ArrayList<>());
+                    readDataFile(attr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+
 
 
     }
 
 
-    public static String getIP()
+    public static String get(String attr)
     {
-        int index = random.nextInt(ips.size()) ;
+        List<String> list = attributeValues.get(attr);
 
-        return ips.get(index);
+        int index = random.nextInt(list.size()) ;
+
+        return list.get(index);
     }
 
-    public static List<String> getAllIps()
+    public static List<String> getAll(String attr)
     {
-        return  ips.stream().collect(Collectors.toList());
+        List<String> list = attributeValues.get(attr);
+        return  list.stream().collect(Collectors.toList());
     }
 
-    public static List<String> getAllCCVs()
-    {
-        return  ccvs.stream().collect(Collectors.toList());
-    }
 
-    public static String getCCV()
-    {
-        int index = random.nextInt(ccvs.size()) ;
 
-        return ips.get(index);
-    }
+
 
     private static void readDataFile(String prefix)  throws Exception {
         File file = new File(dataDir+prefix);
+        List<String> list = attributeValues.get(prefix);
 
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file)))
         {
@@ -61,12 +62,7 @@ public class CCVIPValues {
 
             while(line!=null)
             {
-                if (prefix.startsWith("ccv"))
-                    ccvs.add(line);
-                else
-                    ips.add(line);
-
-
+                list.add(line);
                 line = bufferedReader.readLine();
             }
 
