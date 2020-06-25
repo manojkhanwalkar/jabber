@@ -9,10 +9,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class HistoryFileGenerator {
 
@@ -93,10 +90,47 @@ public class HistoryFileGenerator {
 
     }
 
+    private static Map<String,Integer> veocityCount(List<File> files)
+    {
+        Map<String,Integer> map = new HashMap<>();
+        files.stream().forEach(file->{
+
+            try(BufferedReader reader = new BufferedReader(new FileReader(file)))
+            {
+                String line = reader.readLine();
+                while(line!=null)
+                {
+                    String[] str = line.split(" ");
+
+                    Integer count = map.computeIfAbsent(str[0], key->  Integer.valueOf(0));
+                    map.put(str[0], count+Integer.valueOf(str[1]));
+
+                    line = reader.readLine();
+                }
+            } catch (Exception e) { e.printStackTrace();}
+
+
+        });
+
+        return map;
+    }
+
     public static void main(String[] args) throws Exception {
 
 
-        lastNDays(30,"ccv_");
+        System.out.println(veocityCount(lastNDays(30,"ccv_")));
+
+        System.out.println(veocityCount(lastNDays(30,"ip_")));
+
+        System.out.println(veocityCount(lastNDays(1,"ccv_")));
+
+        System.out.println(veocityCount(lastNDays(1,"ip_")));
+
+        System.out.println(veocityCount(lastNDays(7,"ccv_")));
+
+        System.out.println(veocityCount(lastNDays(7,"ip_")));
+
+
         // generate files with CCV and IP values to use
         // generate history file summary for 35 days
         //
