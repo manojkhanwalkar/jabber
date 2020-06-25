@@ -1,20 +1,65 @@
 package vfs;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class CCVIPValues {
 
+    static List<String> ips = new ArrayList<>();
+    static List<String> ccvs = new ArrayList<>();
 
-    public static void main(String[] args) throws Exception {
 
-        //generateDataFile("ccv");
-       // generateDataFile("ip");
 
+    public static void init()
+    {
+        try {
+            readDataFile("ccv");
+            readDataFile("ip");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    public static String getIP()
+    {
+        int index = random.nextInt(ips.size()) ;
+
+        return ips.get(index);
+    }
+
+    public static String getCCV()
+    {
+        int index = random.nextInt(ccvs.size()) ;
+
+        return ips.get(index);
+    }
+
+    private static void readDataFile(String prefix)  throws Exception {
+        File file = new File(dataDir+prefix);
+
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file)))
+        {
+            String line = bufferedReader.readLine();
+
+            while(line!=null)
+            {
+                if (prefix.startsWith("ccv"))
+                    ccvs.add(line);
+                else
+                    ips.add(line);
+
+
+                line = bufferedReader.readLine();
+            }
+
+        }
     }
 
 
@@ -29,9 +74,9 @@ public class CCVIPValues {
       {
           for (int i=0;i<10;i++) {
               if (prefix.startsWith("ccv"))
-                  bufferedWriter.write(getCCV());
+                  bufferedWriter.write(generateCCV()());
               else
-                  bufferedWriter.write(getIP());
+                  bufferedWriter.write(generateIP());
 
               bufferedWriter.newLine();
           }
@@ -45,7 +90,7 @@ public class CCVIPValues {
 
     static Random random = new Random();
 
-    private static String getCCV()
+    private static String generateCCV()
     {
 
         StringBuilder builder = new StringBuilder(16);
@@ -58,7 +103,7 @@ public class CCVIPValues {
         return builder.toString();
     }
 
-    private static String getIP()
+    private static String generateIP()
     {
 
         //100.200.255.255
