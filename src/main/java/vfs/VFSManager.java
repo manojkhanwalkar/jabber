@@ -66,7 +66,7 @@ public class VFSManager {
     }
 
 
-    CurrentFileManager fileManager = new CurrentFileManager("ccv", "ip");
+    CurrentFileManager fileManager = new CurrentFileManager(this,"ccv", "ip");
 
 
 

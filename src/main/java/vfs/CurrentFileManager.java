@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class CurrentFileManager {
 
@@ -20,11 +22,12 @@ public class CurrentFileManager {
 
     Map<String,BufferedWriter> writers = new HashMap<>();
 
-    public CurrentFileManager(String... arrtibs)
+    VFSManager vfsManager ;
+
+    public CurrentFileManager(VFSManager vfsManager , String... arrtibs)
     {
         this.attribs = arrtibs;
-
-
+        this.vfsManager = vfsManager;
     }
 
 
@@ -50,6 +53,8 @@ public class CurrentFileManager {
 
                     // recovery code here
 
+                    recover(attr,reader);
+
                 }
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter(currentDir + attr + "_" + formattedDate,true));
@@ -62,6 +67,40 @@ public class CurrentFileManager {
 
 
 
+
+    }
+
+    private void recover(String attr, BufferedReader reader)
+    {
+        try {
+            List<String> list = new ArrayList<>();
+
+            String line=reader.readLine();
+            while(line!=null)
+            {
+                list.add(line);
+                line = reader.readLine();
+            }
+
+            // Map<Integer, Long> result = numbers.stream()
+            //      .filter(val -> val > 3)
+            //      .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+            Map<String, Long> keyCount = list.stream().sorted().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            VelocityStatsManager velocityStatsManager = vfsManager.attrVelocityMap.get(attr);
+            keyCount.entrySet().stream().forEach(entry->{
+
+                try {
+                    velocityStatsManager.currentCountMap.get(entry.getKey()).setPrevCount(entry.getValue().intValue());
+                } catch (Exception e) {
+                   // e.printStackTrace();
+                }
+
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
