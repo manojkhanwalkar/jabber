@@ -13,6 +13,7 @@ public class VelocityStatsManager {
     String attribute;  // ccv or ip
 
     Map<String,HistoricalCount> historicalCountMap = new HashMap<>();
+    Map<String,CurrentCount> currentCountMap = new HashMap<>();
 
     public VelocityStatsManager(String attribute) {
         this.attribute = attribute;
@@ -26,7 +27,12 @@ public class VelocityStatsManager {
         return historicalCountMap.get(key);
     }
 
-    //TODO - todays count and last 5 mins count to be implemented.
+    public CurrentCount getCurrentStats(String key)
+    {
+        return currentCountMap.get(key);
+    }
+
+
 
 
     public void init()
@@ -35,6 +41,8 @@ public class VelocityStatsManager {
         CCVIPValues.getAll(attribute).forEach(str->{
 
             historicalCountMap.put(str, new HistoricalCount());
+
+            currentCountMap.put(str, new CurrentCount());
         });
 
         populateHistoricalCount(30,"setLast30Days");
