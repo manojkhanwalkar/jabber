@@ -53,13 +53,8 @@ public class CurrentCount {
             minuteCount.add(new Counter());
         }
 
-        CurrentCountRecycler recycler = new CurrentCountRecycler(this);
-        service.scheduleAtFixedRate(recycler,1,1, TimeUnit.MINUTES);
     }
 
-    //TODO - this needs to be at the velocity stats manager level.
-
-    transient ScheduledExecutorService service = new ScheduledThreadPoolExecutor(1);
 
 
     public synchronized void increment()
@@ -93,28 +88,6 @@ public class CurrentCount {
     }
 
 
-    static class CurrentCountRecycler implements Runnable
-    {
-
-        final CurrentCount currentCount;
-
-        public CurrentCountRecycler(CurrentCount currentCount) {
-            this.currentCount = currentCount;
-        }
-
-        @Override
-        public void run() {
-
-            synchronized (currentCount)
-            {
-
-                int count = currentCount.minuteCount.removeFirst().count;
-                currentCount.prevCount += count;
-                currentCount.minuteCount.add(new Counter());
-            }
-
-        }
-    }
 
 
     public static void main(String[] args) throws Exception  {
