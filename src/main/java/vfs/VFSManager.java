@@ -26,6 +26,8 @@ public class VFSManager {
 
         CurrentCountRecycler recycler = new CurrentCountRecycler(this);
         service.scheduleAtFixedRate(recycler,15,15, TimeUnit.SECONDS);
+
+        fileManager.recover();
     }
 
 
@@ -64,6 +66,9 @@ public class VFSManager {
     }
 
 
+    CurrentFileManager fileManager = new CurrentFileManager("ccv", "ip");
+
+
 
     public VelocityStatsList process(TransactionData transactionData)
     {
@@ -75,6 +80,8 @@ public class VFSManager {
 
             String key = entry.getKey();
             String value = entry.getValue();
+
+            fileManager.write(key,value);
 
             VelocityStatsManager velocityStatsManager = attrVelocityMap.get(key);
             if (velocityStatsManager!=null)
