@@ -1,28 +1,39 @@
 package vfs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TransactionData {
 
-    String ccv;
-    String ip;
+
+    HashMap<String,String> attrValueMap = new HashMap<>();
+
     Date date;
 
-    public String getCcv() {
-        return ccv;
+    public HashMap<String, String> getAttrValueMap() {
+        return attrValueMap;
     }
 
-    public void setCcv(String ccv) {
-        this.ccv = ccv;
+    public void setAttrValueMap(HashMap<String, String> attrValueMap) {
+        this.attrValueMap = attrValueMap;
     }
 
-    public String getIp() {
-        return ip;
+
+    @JsonIgnore
+    public String get(String attr)
+    {
+        return  attrValueMap.get(attr);
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    @JsonIgnore
+    public void put(String attr, String value)
+    {
+          attrValueMap.put(attr,value);
     }
+
 
     public Date getDate() {
         return date;

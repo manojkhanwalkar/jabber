@@ -15,8 +15,8 @@ public class VFSClient {
         for (int i=0;i<100;i++) {
 
             TransactionData transactionData = new TransactionData();
-            transactionData.setCcv(CCVIPValues.get("ccv"));
-            transactionData.setIp(CCVIPValues.get("ip"));
+            transactionData.put("ccv",CCVIPValues.get("ccv"));
+            transactionData.put("ip",CCVIPValues.get("ip"));
 
             transactionData.setDate(new Date());
 

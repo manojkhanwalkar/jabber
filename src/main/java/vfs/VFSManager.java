@@ -70,27 +70,20 @@ public class VFSManager {
         //TODO - use method handles to figure out the attr values
 
         VelocityStatsList velocityStatsList = new VelocityStatsList();
-        String ccvValue = transactionData.getCcv();
-        if (ccvValue!=null)
-        {
-            VelocityStatsManager velocityStatsManager = attrVelocityMap.get("ccv");
-            if (velocityStatsManager!=null)
-            {
-                VelocityStats velocityStats = velocityStatsManager.add(ccvValue);
-                velocityStatsList.addStats("ccv",velocityStats);
-            }
-        }
 
-        String ipValue = transactionData.getIp();
-        if (ipValue!=null)
-        {
-            VelocityStatsManager velocityStatsManager = attrVelocityMap.get("ip");
+        transactionData.getAttrValueMap().entrySet().stream().forEach(entry->{
+
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            VelocityStatsManager velocityStatsManager = attrVelocityMap.get(key);
             if (velocityStatsManager!=null)
             {
-                VelocityStats velocityStats = velocityStatsManager.add(ccvValue);
-                velocityStatsList.addStats("ip",velocityStats);
+                VelocityStats velocityStats = velocityStatsManager.add(value);
+                velocityStatsList.addStats(key,velocityStats);
             }
-        }
+        });
+
 
 
         return velocityStatsList;
