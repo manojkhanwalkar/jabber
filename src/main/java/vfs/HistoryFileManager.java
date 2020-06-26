@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class HistoryFileManager {
 
@@ -118,11 +120,79 @@ public class HistoryFileManager {
         return map;
     }
 
+    public static void moveCurrentToHistory() throws Exception
+    {
+        File file = new File(currentDir);
+
+        File[] files = file.listFiles();
+
+        for (File f : files)
+        {
+            if (f.isFile())
+            {
+                Map<String, Long> keyCount = recover(f);
+
+                BufferedWriter writer = new BufferedWriter(new FileWriter(historyDir+f.getName()));
+
+                keyCount.entrySet().stream().forEach(entry->{
+
+                    try {
+                        writer.write(entry.getKey() + " " + entry.getValue());
+                        writer.newLine();
+                        writer.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                writer.close();
+
+                f.deleteOnExit();
+
+            }
+
+
+        }
+
+    }
+
+
+    private static Map<String,Long> recover(File file)
+    {
+        try {
+            List<String> list = new ArrayList<>();
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            String line=reader.readLine();
+            while(line!=null)
+            {
+                list.add(line);
+                line = reader.readLine();
+            }
+
+
+            Map<String, Long> keyCount = list.stream().sorted().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            reader.close();
+
+            return keyCount;
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+            return null;
+
+    }
+
+
     public static void main(String[] args) throws Exception {
 
 
+        moveCurrentToHistory();
 
-                MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+       /*         MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 
                 MethodType mt = MethodType.methodType(void.class, int.class);
                 MethodHandle methodHandle = publicLookup.findVirtual(HistoricalCount.class, "setLast30Days", mt);
@@ -142,7 +212,7 @@ public class HistoryFileManager {
 
                     System.out.println(historicalCount.getLast30Days());
 
-
+*/
 
 
      /*   System.out.println(veocityCount(lastNDays(30,"ccv_")));
@@ -208,7 +278,8 @@ public class HistoryFileManager {
     }
 
    static  String historyDir = "/home/manoj/data/vfs/history/";
-    String currentDir = "/home/manoj/data/vfs/current/";
+
+    static String currentDir = "/home/manoj/data/vfs/current/";
 
 
 
