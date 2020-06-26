@@ -1,5 +1,7 @@
 package vfs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.ScheduledExecutorService;
@@ -8,10 +10,33 @@ import java.util.concurrent.TimeUnit;
 
 public class CurrentCount {
 
+    public LinkedList<Counter> getMinuteCount() {
+        return minuteCount;
+    }
+
+    public void setMinuteCount(LinkedList<Counter> minuteCount) {
+        this.minuteCount = minuteCount;
+    }
+
+    public int getPrevCount() {
+        return prevCount;
+    }
+
+    public void setPrevCount(int prevCount) {
+        this.prevCount = prevCount;
+    }
+
     static class Counter
     {
         int count=0;
 
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
     }
 
     LinkedList<Counter> minuteCount;
@@ -32,7 +57,9 @@ public class CurrentCount {
         service.scheduleAtFixedRate(recycler,1,1, TimeUnit.MINUTES);
     }
 
-    ScheduledExecutorService service = new ScheduledThreadPoolExecutor(1);
+    //TODO - this needs to be at the velocity stats manager level.
+
+    transient ScheduledExecutorService service = new ScheduledThreadPoolExecutor(1);
 
 
     public synchronized void increment()
@@ -40,6 +67,7 @@ public class CurrentCount {
         minuteCount.getLast().count++;
     }
 
+    @JsonIgnore
     public synchronized int getDayCount()
     {
         int totCount=prevCount + getLast5MinCount();
@@ -49,6 +77,7 @@ public class CurrentCount {
     }
 
 
+    @JsonIgnore
     public synchronized int getLast5MinCount()
     {
         int totCount=0;
@@ -105,4 +134,12 @@ public class CurrentCount {
 
     }
 
+    @Override
+    public String toString() {
+        return "CurrentCount{" +
+                "prevCount=" + getDayCount() +
+                "Last%MinCount=" + getLast5MinCount() +
+
+                '}';
+    }
 }

@@ -33,6 +33,17 @@ public class VelocityStatsManager {
     }
 
 
+    public VelocityStats add(String key)
+    {
+        CurrentCount currentCount = currentCountMap.computeIfAbsent(key,k-> new CurrentCount());
+        currentCount.increment();
+
+        VelocityStats stats = new VelocityStats();
+        stats.setCurrentCount(currentCount);
+        stats.setHistoricalCount(historicalCountMap.get(key));
+
+        return stats;
+    }
 
 
     public void init()

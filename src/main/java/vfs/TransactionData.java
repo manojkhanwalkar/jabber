@@ -5,7 +5,7 @@ import java.util.Date;
 public class TransactionData {
 
     String ccv;
-    String id;
+    String ip;
     Date date;
 
     public String getCcv() {
@@ -16,12 +16,12 @@ public class TransactionData {
         this.ccv = ccv;
     }
 
-    public String getId() {
-        return id;
+    public String getIp() {
+        return ip;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public Date getDate() {
