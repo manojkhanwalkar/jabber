@@ -32,7 +32,7 @@ public class VFSManager {
 
         vfsManager.init();
 
-        System.out.println(vfsManager.attrVelocityMap);
+      //  System.out.println(vfsManager.attrVelocityMap);
 
     }
 }
