@@ -72,7 +72,6 @@ public class VFSManager {
 
     public VelocityStatsList process(TransactionData transactionData)
     {
-        //TODO - use method handles to figure out the attr values
 
         VelocityStatsList velocityStatsList = new VelocityStatsList();
 
