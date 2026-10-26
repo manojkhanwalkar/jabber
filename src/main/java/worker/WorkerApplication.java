@@ -17,6 +17,10 @@ public class WorkerApplication extends Application<WorkerConfiguration> {
 
     @Override
     public void initialize(Bootstrap<WorkerConfiguration> bootstrap) {
+        // Resolve ${ENV_VAR} references (keystore path/password) in the YAML config.
+        bootstrap.setConfigurationSourceProvider(new io.dropwizard.configuration.SubstitutingSourceProvider(
+                bootstrap.getConfigurationSourceProvider(),
+                new io.dropwizard.configuration.EnvironmentVariableSubstitutor(true)));
 
     //    IDStatusPollManager.getInstance().start();
 
@@ -38,6 +42,7 @@ public class WorkerApplication extends Application<WorkerConfiguration> {
         creditManagerFactory.init();*/
 
         environment.jersey().register(resource);
+        environment.jersey().register(new util.SharedTokenAuthFilter());
       //  environment.healthChecks().register("APIHealthCheck", new AppHealthCheck());
 
         Runtime.getRuntime().addShutdownHook(new Thread()

@@ -2,6 +2,8 @@ package util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
@@ -13,7 +15,24 @@ public class JSONUtil {
 
     static {
         mapper.registerModule(new JavaTimeModule());
-        mapper.enableDefaultTyping();
+        // Default typing stays on (the persisted JSON format carries type ids for
+        // collections), but only allow-listed types may be instantiated. The previous
+        // enableDefaultTyping() accepted any class name, which allows gadget-chain RCE.
+        PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
+                .allowIfSubType(java.util.Collection.class)
+                .allowIfSubType(java.util.Map.class)
+                .allowIfSubType("java.time.")
+                .allowIfSubType("data.")
+                .allowIfSubType("decision.")
+                .allowIfSubType("scheduler.")
+                .allowIfSubType("slacker.")
+                .allowIfSubType("matcher.")
+                .allowIfSubType("vfs.")
+                .allowIfSubType("logger.")
+                .allowIfSubType("chatter.")
+                .allowIfSubType("broker.")
+                .build();
+        mapper.activateDefaultTyping(ptv, ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
     }
 
 
