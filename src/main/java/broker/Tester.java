@@ -1,6 +1,5 @@
 package broker;
 
-import software.amazon.awssdk.services.rekognition.model.Sunglasses;
 
 public class Tester {
 
