@@ -21,11 +21,20 @@ public class Connection {
 
 
 
+    // Hostname verification is no longer disabled globally. For local development with a
+    // self-signed certificate whose name does not match, start the JVM with
+    // -Djdk.internal.httpclient.disableHostnameVerification=true explicitly.
     private void initConnectionProps()
     {
-        final Properties props = System.getProperties();
-        props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
+    }
 
+    private static HttpRequest.Builder withAuth(HttpRequest.Builder builder)
+    {
+        String token = SharedTokenAuthFilter.clientToken();
+        if (token != null && !token.isEmpty()) {
+            builder.header(SharedTokenAuthFilter.HEADER, token);
+        }
+        return builder;
     }
 
     public Connection(String target)
@@ -54,7 +63,7 @@ public class Connection {
     private String post(String str , String url) throws Exception
     {
 
-        HttpRequest httprequest = HttpRequest.newBuilder()
+        HttpRequest httprequest = withAuth(HttpRequest.newBuilder())
                 .uri(URI.create(target + url))
                 .header("Content-Type", "application/json")
                //  .header("HMAC" , HMACUtil.calculateHMAC(str,HmacKey))
@@ -77,7 +86,7 @@ public class Connection {
     {
 
         try {
-            HttpRequest httprequest = HttpRequest.newBuilder()
+            HttpRequest httprequest = withAuth(HttpRequest.newBuilder())
                     .uri(URI.create(target + url))
                     .GET()
                     .timeout(Duration.ofMinutes(1))

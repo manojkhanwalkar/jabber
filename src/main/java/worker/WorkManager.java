@@ -24,10 +24,13 @@ public class WorkManager {
 
 
 
+        java.nio.file.Path jarPath = null;
         try {
             //Thread.sleep(5000);
 
-            String jarName = "/tmp/"+ UUID.randomUUID().toString()+"*.jar";
+            // Owner-only temp file (0600 on POSIX) instead of a world-readable name in /tmp.
+            jarPath = java.nio.file.Files.createTempFile("jabber-job-", ".jar");
+            String jarName = jarPath.toString();
             getJarFromBase64EncodedString(jarName, request.getBase64Jar());
 
             String jobClassName = request.getJobClassName();
@@ -52,6 +55,16 @@ public class WorkManager {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (jarPath != null) {
+                try {
+                    java.nio.file.Files.deleteIfExists(jarPath);
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         });
